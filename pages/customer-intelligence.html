@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Customer Intelligence · Archive 27</title>
+<link rel="stylesheet" href="../css/main.css"/>
+<script src="https://cdn.plot.ly/plotly-2.32.0.min.js"></script>
+</head>
+<body>
+<nav class="nav" id="main-nav"></nav>
+<div class="page-wrapper"><div class="container">
+
+<div class="page-header">
+  <div class="page-header-label label">◉ Customer Intelligence</div>
+  <h1>Know Your Customer.<br/><span class="text-accent">Deeply.</span></h1>
+  <p>Demographic profiling, behavioural segmentation, persona radar analysis, and Sankey flow mapping — from 10,000 consumer responses.</p>
+  <div class="page-header-meta">
+    <span class="tag tag-green">Descriptive Analytics</span>
+    <span class="tag tag-blue">Diagnostic Analytics</span>
+    <span class="tag tag-amber">10,000 Respondents</span>
+    <span class="tag tag-violet">6 Personas</span>
+  </div>
+</div>
+
+<div class="grid-4 mb-lg" id="ci-kpis"></div>
+
+<div class="tabs-wrapper">
+  <div class="tab-nav">
+    <button class="tab-btn-nav active" data-tab="demographics">Demographics</button>
+    <button class="tab-btn-nav" data-tab="behaviour">Fashion Behaviour</button>
+    <button class="tab-btn-nav" data-tab="personas">Persona Profiles</button>
+    <button class="tab-btn-nav" data-tab="segments">Segment Deep-Dive</button>
+    <button class="tab-btn-nav" data-tab="flow">Customer Flow</button>
+  </div>
+
+  <div class="tab-panel active" data-tab="demographics">
+    <div class="grid-2 mb-lg">
+      <div class="chart-wrap"><div class="chart-header"><div><div class="chart-title">Age Group Distribution</div><div class="chart-sub">Gen Z (18–22) is the dominant cohort</div></div></div><div id="chart-age" style="height:300px;"></div></div>
+      <div class="chart-wrap"><div class="chart-header"><div><div class="chart-title">Gender Split</div><div class="chart-sub">Female-led demand — 57.6%</div></div></div><div id="chart-gender" style="height:300px;"></div></div>
+    </div>
+    <div class="grid-2 mb-lg">
+      <div class="chart-wrap"><div class="chart-header"><div><div class="chart-title">City Tier Distribution</div><div class="chart-sub">Metro + Tier 2 = ~82% — validates Instagram-first strategy</div></div></div><div id="chart-city" style="height:300px;"></div></div>
+      <div class="chart-wrap"><div class="chart-header"><div><div class="chart-title">Income Distribution</div><div class="chart-sub">₹10K–50K bracket dominant</div></div></div><div id="chart-income" style="height:300px;"></div></div>
+    </div>
+    <div class="chart-wrap mb-lg"><div class="chart-header"><div><div class="chart-title">Purchase Intent by Age Group</div><div class="chart-sub">18–27 age group drives 62% of likely buyers</div></div></div><div id="chart-age-intent" style="height:320px;"></div></div>
+    <div class="grid-2">
+      <div class="insight green"><span class="insight-icon">📌</span><div class="insight-text"><strong>18–27 age group drives 62% of likely buyers.</strong> Gen Z and early millennials are the primary revenue engine.</div></div>
+      <div class="insight amber"><span class="insight-icon">⚡</span><div class="insight-text"><strong>Metro cities contribute 47% of respondents</strong> and show the highest purchase intent. Tier 2 is the growth frontier.</div></div>
+    </div>
+  </div>
+
+  <div class="tab-panel" data-tab="behaviour">
+    <div class="grid-2 mb-lg">
+      <div class="chart-wrap"><div class="chart-header"><div><div class="chart-title">Fashion Identity</div><div class="chart-sub">What drives respondents' relationship with fashion?</div></div></div><div id="chart-fash-id" style="height:320px;"></div></div>
+      <div class="chart-wrap"><div class="chart-header"><div><div class="chart-title">Primary Style Preference</div><div class="chart-sub">Y2K / Retro and Streetwear lead</div></div></div><div id="chart-style" style="height:320px;"></div></div>
+    </div>
+    <div class="grid-2 mb-lg">
+      <div class="chart-wrap"><div class="chart-header"><div><div class="chart-title">Discovery Channel</div><div class="chart-sub">Instagram/Reels at ~41% — content-first strategy validated</div></div></div><div id="chart-channel" style="height:300px;"></div></div>
+      <div class="chart-wrap"><div class="chart-header"><div><div class="chart-title">Shopping Frequency</div><div class="chart-sub">Monthly shoppers form the core buyer base</div></div></div><div id="chart-freq" style="height:300px;"></div></div>
+    </div>
+    <div class="chart-wrap mb-lg"><div class="chart-header"><div><div class="chart-title">Purchase Intent by Primary Style</div><div class="chart-sub">Y2K/Retro & Streetwear show highest "Interested" rates</div></div></div><div id="chart-style-intent" style="height:340px;"></div></div>
+  </div>
+
+  <div class="tab-panel" data-tab="personas">
+    <div class="section-label mb-md">Persona Radar Comparison</div>
+    <div class="chart-wrap mb-lg"><div class="chart-header"><div><div class="chart-title">6-Dimension Persona Radar</div><div class="chart-sub">Purchase Intent · Spend Level · Sustainability · UGC · Subscription · Brand Loyalty</div></div></div><div id="chart-radar" style="height:420px;"></div></div>
+    <div class="grid-3 mb-lg" id="persona-cards"></div>
+    <div class="chart-wrap"><div class="chart-header"><div><div class="chart-title">Median Monthly Spend by Persona</div></div></div><div id="chart-spend-persona" style="height:280px;"></div></div>
+  </div>
+
+  <div class="tab-panel" data-tab="segments">
+    <div class="section-label mb-md">Interactive Segment Explorer</div>
+    <div class="flex gap-sm mb-lg" style="flex-wrap:wrap;" id="seg-btns">
+      <button class="btn btn-primary btn-sm" onclick="loadSegment('Aesthetic Chaser',this)">Aesthetic Chaser</button>
+      <button class="btn btn-outline btn-sm" onclick="loadSegment('Conscious Spender',this)">Conscious Spender</button>
+      <button class="btn btn-outline btn-sm" onclick="loadSegment('Bargain Hunter',this)">Bargain Hunter</button>
+      <button class="btn btn-outline btn-sm" onclick="loadSegment('Fence-Sitter',this)">Fence-Sitter</button>
+      <button class="btn btn-outline btn-sm" onclick="loadSegment('Occasional Gifter',this)">Occasional Gifter</button>
+      <button class="btn btn-outline btn-sm" onclick="loadSegment('Skeptic',this)">Skeptic</button>
+    </div>
+    <div id="segment-detail"></div>
+  </div>
+
+  <div class="tab-panel" data-tab="flow">
+    <div class="chart-wrap mb-lg"><div class="chart-header"><div><div class="chart-title">Customer Flow: Persona → Purchase Intent</div><div class="chart-sub">Sankey diagram — how each persona maps to purchase outcomes</div></div></div><div id="chart-sankey" style="height:480px;"></div></div>
+    <div class="grid-2">
+      <div class="chart-wrap"><div class="chart-header"><div><div class="chart-title">Prior Thrift Experience</div></div></div><div id="chart-thrift-exp" style="height:280px;"></div></div>
+      <div class="chart-wrap"><div class="chart-header"><div><div class="chart-title">Top Concerns (Barriers)</div></div></div><div id="chart-concerns" style="height:280px;"></div></div>
+    </div>
+  </div>
+</div><!-- /tabs-wrapper -->
+
+</div></div>
+<footer class="footer"><div class="container"><div class="footer-inner">
+  <span><span class="footer-brand">Archive 27</span> · Customer Intelligence</span>
+  <span>SP Jain School of Global Management · Data Analytics PBL</span>
+</div></div></footer>
+
+<script src="../js/utils.js"></script>
+<script src="../js/data.js"></script>
+<script>
+const D = window.A27_DATA;
+const { buildNav, safePlot, PERSONA_COLORS, PERSONA_ORDER, initTabs, registerCharts } = window.A27;
+buildNav('customer-intelligence');
+
+// KPIs
+document.getElementById('ci-kpis').innerHTML = [
+  { label:'Total Respondents',  value:'10,000', delta:'5× original dataset', cls:'pos' },
+  { label:'Likely Buyers',      value:D.overview.likely_buyers.toLocaleString('en-IN'), delta:'55.2% purchase intent', cls:'pos' },
+  { label:'Female Respondents', value:'57.6%',  delta:'Female-led demand',   cls:'pos' },
+  { label:'Metro + Tier 2',     value:'82.4%',  delta:'Digital-first market',cls:'neu' },
+].map(k=>`<div class="kpi-card"><div class="kpi-label">${k.label}</div><div class="kpi-value ${k.cls==='pos'?'accent':''}">${k.value}</div><div class="kpi-delta ${k.cls}">${k.delta}</div></div>`).join('');
+
+const ageOrder=['Under 18','18-22','23-27','28-34','35-44','45+'];
+const intentsArr=[{k:'Interested',c:'#00916E'},{k:'Maybe',c:'#C07800'},{k:'Not Interested',c:'#D93025'}];
+
+// ── Tab 1: Demographics (ACTIVE — render immediately) ──
+registerCharts('demographics', () => {
+  safePlot('chart-age',[{type:'bar',x:ageOrder,y:ageOrder.map(a=>Math.round((D.demographics.age_group[a]||0)*100)),marker:{color:ageOrder.map((_,i)=>i===1||i===2?'#00916E':'#E0E0E5'),line:{color:'transparent'}},text:ageOrder.map(a=>Math.round((D.demographics.age_group[a]||0)*100)+'%'),textposition:'outside',hovertemplate:'%{x}: %{y}%<extra></extra>'}],{xaxis:{title:{text:'Age Group'}},yaxis:{ticksuffix:'%',title:{text:'%'}},margin:{t:10,b:60,l:50,r:20}});
+  const gKeys=Object.keys(D.demographics.gender);
+  safePlot('chart-gender',[{type:'pie',labels:gKeys,values:gKeys.map(g=>Math.round(D.demographics.gender[g]*10000)),marker:{colors:['#00916E','#1A6FCC','#6E40C9','#86868B'],line:{color:'#fff',width:2}},textinfo:'label+percent',hovertemplate:'%{label}: %{percent}<extra></extra>'}],{margin:{t:20,b:20,l:20,r:20},showlegend:false});
+  const cityOrder=['Metro','Tier 2','Tier 3 / Small town','Rural'];
+  safePlot('chart-city',[{type:'bar',orientation:'h',y:cityOrder,x:cityOrder.map(c=>Math.round((D.demographics.city_tier[c]||0)*100)),marker:{color:['#00916E','#1A6FCC','#C07800','#D93025'],line:{color:'transparent'}},text:cityOrder.map(c=>Math.round((D.demographics.city_tier[c]||0)*100)+'%'),textposition:'outside',hovertemplate:'%{y}: %{x}%<extra></extra>'}],{xaxis:{ticksuffix:'%',range:[0,55]},margin:{t:10,b:50,l:160,r:60}});
+  const incOrder=['Below 10k','10k-25k','25k-50k','50k-1L','Above 1L'];
+  safePlot('chart-income',[{type:'bar',x:incOrder,y:incOrder.map(i=>Math.round((D.demographics.income[i]||0)*100)),marker:{color:'#6E40C9',opacity:.85,line:{color:'transparent'}},hovertemplate:'%{x}: %{y}%<extra></extra>'}],{xaxis:{title:{text:'Income Band'},tickangle:-20},yaxis:{ticksuffix:'%'},margin:{t:10,b:80,l:50,r:20}});
+  safePlot('chart-age-intent',intentsArr.map(it=>({type:'bar',name:it.k,x:ageOrder,y:ageOrder.map(a=>Math.round((D.demographics.age_by_intent[a]?.[it.k]||0)*100)),marker:{color:it.c},hovertemplate:`${it.k} · %{x}: %{y}%<extra></extra>`})),{barmode:'stack',xaxis:{title:{text:'Age Group'}},yaxis:{ticksuffix:'%'},legend:{orientation:'h',y:-0.25},margin:{t:10,b:80,l:50,r:20}});
+});
+
+// ── Tab 2: Behaviour ──
+registerCharts('behaviour', () => {
+  const fiKeys=Object.keys(D.fashion.fashion_identity).sort((a,b)=>D.fashion.fashion_identity[b]-D.fashion.fashion_identity[a]);
+  safePlot('chart-fash-id',[{type:'bar',orientation:'h',y:fiKeys,x:fiKeys.map(k=>Math.round(D.fashion.fashion_identity[k]*100)),marker:{color:'#6E40C9',opacity:.85,line:{color:'transparent'}},text:fiKeys.map(k=>Math.round(D.fashion.fashion_identity[k]*100)+'%'),textposition:'outside',hovertemplate:'%{y}: %{x}%<extra></extra>'}],{xaxis:{ticksuffix:'%',range:[0,35]},margin:{t:10,b:50,l:200,r:60}});
+  const spKeys=Object.keys(D.fashion.style_primary).sort((a,b)=>D.fashion.style_primary[b]-D.fashion.style_primary[a]);
+  safePlot('chart-style',[{type:'bar',x:spKeys,y:spKeys.map(k=>Math.round(D.fashion.style_primary[k]*100)),marker:{color:['#00916E','#1A6FCC','#6E40C9','#C07800','#D93025','#00916E','#86868B'],line:{color:'transparent'}},text:spKeys.map(k=>Math.round(D.fashion.style_primary[k]*100)+'%'),textposition:'outside',hovertemplate:'%{x}: %{y}%<extra></extra>'}],{xaxis:{tickangle:-20},yaxis:{ticksuffix:'%'},margin:{t:10,b:80,l:50,r:20}});
+  const chKeys=Object.keys(D.fashion.discovery_channel).sort((a,b)=>D.fashion.discovery_channel[b]-D.fashion.discovery_channel[a]);
+  safePlot('chart-channel',[{type:'pie',labels:chKeys,values:chKeys.map(k=>D.fashion.discovery_channel[k]),marker:{colors:['#00916E','#1A6FCC','#C07800','#6E40C9','#D93025','#86868B'],line:{color:'#fff',width:2}},textinfo:'label+percent',hovertemplate:'%{label}: %{percent}<extra></extra>'}],{margin:{t:20,b:20,l:20,r:20},showlegend:false});
+  const freqOrder=['Multiple times a month','Once a month','Once every 2-3 months','Few times a year','Rarely'];
+  safePlot('chart-freq',[{type:'bar',x:freqOrder,y:freqOrder.map(f=>Math.round((D.fashion.shop_frequency[f]||0)*100)),marker:{color:'#1A6FCC',opacity:.85,line:{color:'transparent'}},text:freqOrder.map(f=>Math.round((D.fashion.shop_frequency[f]||0)*100)+'%'),textposition:'outside',hovertemplate:'%{x}: %{y}%<extra></extra>'}],{xaxis:{tickangle:-20},yaxis:{ticksuffix:'%'},margin:{t:10,b:100,l:50,r:20}});
+  const styles=Object.keys(D.fashion.style_by_intent);
+  safePlot('chart-style-intent',intentsArr.map(it=>({type:'bar',name:it.k,x:styles,y:styles.map(s=>Math.round((D.fashion.style_by_intent[s]?.[it.k]||0)*100)),marker:{color:it.c},hovertemplate:`${it.k} · %{x}: %{y}%<extra></extra>`})),{barmode:'stack',xaxis:{tickangle:-15},yaxis:{ticksuffix:'%'},legend:{orientation:'h',y:-0.3},margin:{t:10,b:100,l:50,r:20}});
+});
+
+// ── Tab 3: Personas ──
+registerCharts('personas', () => {
+  const radarDims=['purchase_intent','spend_level','sustainability','ugc_propensity','subscription','brand_loyalty'];
+  const radarLabels=['Purchase Intent','Spend Level','Sustainability','UGC Propensity','Subscription','Brand Loyalty'];
+  safePlot('chart-radar',PERSONA_ORDER.map(p=>({type:'scatterpolar',fill:'toself',name:p,r:[...radarDims.map(d=>D.segments[p]?.radar[d]||0),D.segments[p]?.radar[radarDims[0]]||0],theta:[...radarLabels,radarLabels[0]],line:{color:PERSONA_COLORS[p]},fillcolor:PERSONA_COLORS[p]+'22',hovertemplate:`<b>${p}</b><br>%{theta}: %{r:.2f}<extra></extra>`})),{polar:{bgcolor:'rgba(0,0,0,0)',radialaxis:{visible:true,range:[0,1],gridcolor:'#E8E8ED',tickfont:{size:8}},angularaxis:{gridcolor:'#E8E8ED'}},showlegend:true,legend:{orientation:'h',y:-0.15,font:{size:10}},margin:{t:20,b:80,l:30,r:30}});
+  const pcMeta={'Aesthetic Chaser':{age:'18–24',city:'Metro',style:'Y2K/Streetwear',icon:'🎨'},'Conscious Spender':{age:'23–30',city:'Metro',style:'Minimal/Clean',icon:'♻️'},'Bargain Hunter':{age:'18–28',city:'Tier 2/3',style:'Mixed',icon:'💰'},'Fence-Sitter':{age:'22–35',city:'Mixed',style:'Minimal',icon:'⚖️'},'Occasional Gifter':{age:'25–40',city:'Metro',style:'Formal/Classic',icon:'🎁'},'Skeptic':{age:'28–45',city:'Mixed',style:'Formal',icon:'🤔'}};
+  document.getElementById('persona-cards').innerHTML=PERSONA_ORDER.map(p=>{const s=D.segments[p];const m=pcMeta[p];const c=PERSONA_COLORS[p];const ip=Math.round((s.purchase_intent['Interested']||0)*100);return`<div class="card card-glow" style="border-top:3px solid ${c}"><div style="font-size:1.8rem;margin-bottom:.5rem">${m.icon}</div><div style="font-weight:700;font-size:.92rem;color:${c};margin-bottom:.25rem">${p}</div><div class="label" style="margin-bottom:.75rem">${s.pct}% · n=${s.n.toLocaleString()}</div><div class="progress-bar mb-sm" style="margin-top:0"><div class="progress-fill" style="width:${ip}%;background:${c}"></div></div><div class="label mb-md">${ip}% Purchase Intent</div><div style="font-size:.78rem;color:var(--text-3);line-height:1.8">Age: ${m.age}<br/>City: ${m.city}<br/>Style: ${m.style}<br/>Spend: ₹${s.spend_median.toLocaleString()}/mo<br/>Channel: ${s.top_channel}</div></div>`;}).join('');
+  safePlot('chart-spend-persona',[{type:'bar',x:PERSONA_ORDER,y:PERSONA_ORDER.map(p=>D.segments[p]?.spend_median||0),marker:{color:PERSONA_ORDER.map(p=>PERSONA_COLORS[p]),line:{color:'transparent'}},text:PERSONA_ORDER.map(p=>'₹'+(D.segments[p]?.spend_median||0).toLocaleString()),textposition:'outside',hovertemplate:'%{x}<br>₹%{y:,}/mo<extra></extra>'}],{xaxis:{tickangle:-20},yaxis:{title:{text:'₹/month'},tickprefix:'₹'},margin:{t:10,b:80,l:70,r:20}});
+});
+
+// ── Tab 4: Segments ──
+registerCharts('segments', () => { loadSegment('Aesthetic Chaser'); });
+
+function loadSegment(persona, btn) {
+  document.querySelectorAll('#seg-btns button').forEach(b=>{b.classList.remove('btn-primary');b.classList.add('btn-outline');});
+  if(btn){btn.classList.remove('btn-outline');btn.classList.add('btn-primary');}
+  else{ const b=document.querySelector(`#seg-btns button`); if(b){b.classList.remove('btn-outline');b.classList.add('btn-primary');} }
+  const s=D.segments[persona];const c=PERSONA_COLORS[persona];
+  const ip=Math.round((s.purchase_intent['Interested']||0)*100);
+  const mp=Math.round((s.purchase_intent['Maybe']||0)*100);
+  const np=Math.round((s.purchase_intent['Not Interested']||0)*100);
+  document.getElementById('segment-detail').innerHTML=`
+    <div class="grid-4 mb-lg">
+      <div class="kpi-card" style="border-bottom:2px solid ${c}"><div class="kpi-label">Segment Size</div><div class="kpi-value" style="color:${c}">${s.pct}%</div><div class="kpi-delta neu">n = ${s.n.toLocaleString()}</div></div>
+      <div class="kpi-card"><div class="kpi-label">Purchase Intent</div><div class="kpi-value accent">${ip}%</div><div class="kpi-delta pos">Interested</div></div>
+      <div class="kpi-card"><div class="kpi-label">Median Spend</div><div class="kpi-value">₹${s.spend_median.toLocaleString()}</div><div class="kpi-delta neu">per month</div></div>
+      <div class="kpi-card"><div class="kpi-label">Avg Sustainability</div><div class="kpi-value">${s.avg_sustainability}</div><div class="kpi-delta neu">score / 4</div></div>
+    </div>
+    <div class="grid-2 mb-lg">
+      <div class="chart-wrap"><div class="chart-header"><div class="chart-title">${persona} · Intent</div></div><div id="seg-intent" style="height:220px;"></div></div>
+      <div class="chart-wrap"><div class="chart-header"><div class="chart-title">${persona} · Income</div></div><div id="seg-income" style="height:220px;"></div></div>
+    </div>
+    <div class="grid-3">
+      <div class="card"><div class="label mb-sm">Top Channel</div><div style="font-size:1.05rem;font-weight:600;color:${c}">${s.top_channel}</div></div>
+      <div class="card"><div class="label mb-sm">Top Concern</div><div style="font-size:1.05rem;font-weight:600;color:var(--amber)">${s.top_concern}</div></div>
+      <div class="card"><div class="label mb-sm">Primary Style</div><div style="font-size:1.05rem;font-weight:600">${s.top_style}</div></div>
+    </div>`;
+  safePlot('seg-intent',[{type:'pie',labels:['Interested','Maybe','Not Interested'],values:[ip,mp,np],hole:.45,marker:{colors:['#00916E','#C07800','#D93025'],line:{color:'#fff',width:2}},textinfo:'label+percent',hovertemplate:'%{label}: %{percent}<extra></extra>'}],{margin:{t:10,b:10,l:10,r:10},showlegend:false,annotations:[{text:`${ip}%`,x:.5,y:.5,showarrow:false,font:{size:14,color:c}}]});
+  const incKeys=Object.keys(s.income);
+  safePlot('seg-income',[{type:'bar',x:incKeys,y:incKeys.map(k=>Math.round(s.income[k]*100)),marker:{color:c,opacity:.85,line:{color:'transparent'}},hovertemplate:'%{x}: %{y}%<extra></extra>'}],{xaxis:{tickangle:-20},yaxis:{ticksuffix:'%'},margin:{t:10,b:80,l:50,r:20}});
+}
+
+// ── Tab 5: Flow ──
+registerCharts('flow', () => {
+  const sankeyPersonas=PERSONA_ORDER;
+  const src=[],tgt=[],val=[],col=[];
+  sankeyPersonas.forEach((p,pi)=>{['Interested','Maybe','Not Interested'].forEach((intent,ii)=>{const v=Math.round((D.segments[p].purchase_intent[intent]||0)*D.segments[p].n);if(v>0){src.push(pi);tgt.push(6+ii);val.push(v);col.push(PERSONA_COLORS[p]+'88');}});});
+  safePlot('chart-sankey',[{type:'sankey',orientation:'h',node:{pad:20,thickness:16,label:[...sankeyPersonas,'→ Interested','→ Maybe','→ Not Interested'],color:[...sankeyPersonas.map(p=>PERSONA_COLORS[p]),'#00916E','#C07800','#D93025'],line:{color:'rgba(0,0,0,0)',width:0}},link:{source:src,target:tgt,value:val,color:col,hovertemplate:'%{source.label} → %{target.label}<br>%{value:,}<extra></extra>'}}],{margin:{t:10,b:10,l:10,r:10}});
+  const ptKeys=Object.keys(D.attitudes.prior_thrift).sort((a,b)=>D.attitudes.prior_thrift[b]-D.attitudes.prior_thrift[a]);
+  safePlot('chart-thrift-exp',[{type:'pie',labels:ptKeys,values:ptKeys.map(k=>D.attitudes.prior_thrift[k]),marker:{colors:['#00916E','#1A6FCC','#C07800','#D93025'],line:{color:'#fff',width:2}},textinfo:'label+percent',hovertemplate:'%{label}: %{percent}<extra></extra>'}],{margin:{t:20,b:20,l:20,r:20},showlegend:false});
+  const cnKeys=Object.keys(D.attitudes.top_concern).sort((a,b)=>D.attitudes.top_concern[b]-D.attitudes.top_concern[a]);
+  safePlot('chart-concerns',[{type:'bar',orientation:'h',y:cnKeys,x:cnKeys.map(k=>Math.round(D.attitudes.top_concern[k]*100)),marker:{color:'#D93025',opacity:.85,line:{color:'transparent'}},text:cnKeys.map(k=>Math.round(D.attitudes.top_concern[k]*100)+'%'),textposition:'outside',hovertemplate:'%{y}: %{x}%<extra></extra>'}],{xaxis:{ticksuffix:'%',range:[0,35]},margin:{t:10,b:50,l:180,r:70}});
+});
+
+initTabs();
+</script>
+</body>
+</html>
