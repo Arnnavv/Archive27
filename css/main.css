@@ -57,7 +57,7 @@ p{color:var(--ink-2);font-size:.92rem;line-height:1.75}
 .nav-left,.nav-right{display:flex;align-items:center;gap:.25rem}
 .nav-right{justify-content:flex-end}
 .nav-logo{display:flex;flex-direction:column;align-items:center;gap:.2rem;text-decoration:none}
-.nav-logo-img{height:44px;width:auto}
+.nav-logo-img{height:70px;width:auto}
 .nav-link{font-family:var(--font-sans);font-size:.72rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);padding:.5rem .8rem;border-radius:var(--r);transition:var(--t);white-space:nowrap}
 .nav-link:hover{color:var(--ink);background:var(--cream-2)}
 .nav-link.active{color:var(--gold);border-bottom:1px solid var(--gold)}
