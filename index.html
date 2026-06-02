@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Archive 27 — Analytics Platform</title>
+<link rel="stylesheet" href="css/main.css"/>
+<style>
+/* ── Hero ── */
+.hero{min-height:calc(100vh - var(--nav-h));display:grid;grid-template-columns:1fr 1fr;align-items:stretch;background:var(--cream)}
+.hero-left{display:flex;flex-direction:column;justify-content:center;padding:5rem 4rem 5rem 0;border-right:1px solid var(--border)}
+.hero-eyebrow{font-family:var(--font-mono);font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-4);margin-bottom:1.5rem}
+.hero h1{font-size:clamp(3.5rem,5.5vw,5.5rem);line-height:1.0;margin-bottom:1.5rem;font-weight:300}
+.hero h1 em{font-style:italic;color:var(--gold)}
+.hero-sub{font-size:.92rem;color:var(--ink-3);max-width:420px;margin-bottom:3rem;line-height:1.8}
+.hero-cta{display:flex;align-items:center;gap:.75rem;font-family:var(--font-mono);font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink);text-decoration:none;padding-bottom:.5rem;border-bottom:1px solid var(--ink);width:fit-content;transition:var(--t)}
+.hero-cta:hover{color:var(--gold);border-color:var(--gold)}
+.hero-stats{display:flex;gap:3rem;margin-top:4rem;padding-top:2rem;border-top:1px solid var(--border)}
+.hero-stat-n{font-family:var(--font-serif);font-size:2.4rem;color:var(--ink);line-height:1}
+.hero-stat-l{font-family:var(--font-mono);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-4);margin-top:.3rem}
+.hero-right{position:relative;overflow:hidden;background:var(--cream-2)}
+.hero-right-inner{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;padding:3rem}
+.hero-right-pattern{position:absolute;inset:0;opacity:.06;background-image:repeating-linear-gradient(0deg,var(--ink) 0,var(--ink) 1px,transparent 1px,transparent 60px),repeating-linear-gradient(90deg,var(--ink) 0,var(--ink) 1px,transparent 1px,transparent 60px)}
+.hero-right-text{font-family:var(--font-serif);font-size:clamp(5rem,12vw,11rem);line-height:.85;color:var(--ink);opacity:.07;font-weight:300;letter-spacing:-.02em;user-select:none;position:absolute;bottom:-1rem;right:-1rem}
+.hero-kpi-float{background:var(--white);border:1px solid var(--border);border-radius:var(--r-lg);padding:1.5rem;box-shadow:var(--shadow-lg);position:relative;z-index:1;max-width:280px}
+.hkpi-row{display:flex;justify-content:space-between;align-items:center;padding:.5rem 0;border-bottom:1px solid var(--border);font-size:.78rem}
+.hkpi-row:last-child{border-bottom:none}
+.hkpi-label{color:var(--ink-3);font-family:var(--font-mono);font-size:.66rem;letter-spacing:.05em}
+.hkpi-val{color:var(--gold);font-family:var(--font-mono);font-weight:500}
+/* Tier row */
+.tier-row{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--white)}
+.tier-cell{padding:2rem 1.75rem;border-right:1px solid var(--border);transition:var(--t)}
+.tier-cell:last-child{border-right:none}
+.tier-cell:hover{background:var(--cream)}
+.tier-num{font-family:var(--font-mono);font-size:.6rem;letter-spacing:.1em;color:var(--ink-4);margin-bottom:.5rem}
+.tier-name{font-family:var(--font-serif);font-size:1.15rem;margin-bottom:.4rem}
+.tier-desc{font-size:.75rem;color:var(--ink-3);line-height:1.6}
+.tier-tag{margin-top:.75rem}
+@media(max-width:900px){.tier-row{grid-template-columns:1fr 1fr}.hero{grid-template-columns:1fr}.hero-right{display:none}.hero-left{padding:3rem 0}}
+</style>
+</head>
+<body>
+<nav class="nav" id="main-nav"></nav>
+<div class="page">
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left container" style="max-width:none;padding-left:calc((100vw - 1300px)/2 + 2.5rem);padding-right:3rem">
+    <div class="hero-eyebrow fade-up">Archive 27 · Data Analytics Platform</div>
+    <h1 class="fade-up-1">Timeless data.<br/><em>Curated insights.</em></h1>
+    <p class="hero-sub fade-up-2">A full-stack predictive and prescriptive analytics platform built on 10,000-respondent consumer data — uncovering who buys, why, and what to do next.</p>
+    <a href="pages/customer-intelligence.html" class="hero-cta fade-up-3">
+      Explore the Platform <span>→</span>
+    </a>
+    <div class="hero-stats fade-up-4">
+      <div><div class="hero-stat-n" id="st-resp">0</div><div class="hero-stat-l">Respondents</div></div>
+      <div><div class="hero-stat-n" id="st-feat">0</div><div class="hero-stat-l">Features</div></div>
+      <div><div class="hero-stat-n" id="st-pers">0</div><div class="hero-stat-l">Personas</div></div>
+      <div><div class="hero-stat-n" id="st-int">0<span style="font-size:1.6rem">%</span></div><div class="hero-stat-l">Intent Rate</div></div>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-right-pattern"></div>
+    <div class="hero-right-text">A27</div>
+    <div class="hero-right-inner">
+      <div class="hero-kpi-float">
+        <div class="label label-gold mb-sm">Model Performance</div>
+        <div class="hkpi-row"><span class="hkpi-label">XGBoost AUC</span><span class="hkpi-val">0.681</span></div>
+        <div class="hkpi-row"><span class="hkpi-label">Random Forest</span><span class="hkpi-val">0.696</span></div>
+        <div class="hkpi-row"><span class="hkpi-label">Logistic Reg.</span><span class="hkpi-val">0.700</span></div>
+        <div class="hkpi-row"><span class="hkpi-label">Top CLV</span><span class="hkpi-val">₹32,100</span></div>
+        <div class="hkpi-row"><span class="hkpi-label">Mystery Box WTP</span><span class="hkpi-val">90.7%</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TIER ROW -->
+<div class="tier-row">
+  <div class="tier-cell"><div class="tier-num">01 / Complete</div><div class="tier-name text-gold">Descriptive</div><div class="tier-desc">Who are our customers? Demographics, profiling, distribution.</div><div class="tier-tag"><span class="tag tag-sage">✓ Live</span></div></div>
+  <div class="tier-cell"><div class="tier-num">02 / Complete</div><div class="tier-name" style="color:var(--navy)">Diagnostic</div><div class="tier-desc">Why do they buy? Correlations, cross-tabs, persona drivers.</div><div class="tier-tag"><span class="tag tag-navy">✓ Live</span></div></div>
+  <div class="tier-cell"><div class="tier-num">03 / Complete</div><div class="tier-name" style="color:var(--sage)">Predictive</div><div class="tier-desc">What will they do? ML models, CLV, churn, forecasting.</div><div class="tier-tag"><span class="tag tag-sage">✓ Live</span></div></div>
+  <div class="tier-cell"><div class="tier-num">04 / Complete</div><div class="tier-name" style="color:var(--rust)">Prescriptive</div><div class="tier-desc">What should we do? Recommendations, pricing, allocation.</div><div class="tier-tag"><span class="tag tag-rust">✓ Live</span></div></div>
+</div>
+
+<!-- DATA SNAPSHOT -->
+<section style="padding:4rem 0;background:var(--cream)">
+  <div class="container">
+    <div class="section-label">Data Snapshot</div>
+    <div class="flex-between mb-lg" style="flex-wrap:wrap;gap:1rem">
+      <h2>10,000 respondents.<br/>6 personas. One brand.</h2>
+      <a href="pages/customer-intelligence.html" class="btn btn-outline btn-sm">Full Intelligence →</a>
+    </div>
+    <div class="grid-4 mb-lg" id="kpi-row"></div>
+    <div class="grid-2">
+      <div class="chart-wrap"><div class="chart-title">Persona Distribution</div><div class="chart-sub">6 distinct customer archetypes identified from 10K survey</div><div id="ch-persona" style="height:300px"></div></div>
+      <div class="chart-wrap"><div class="chart-title">Purchase Intent by Persona</div><div class="chart-sub">Interested · Maybe · Not Interested breakdown</div><div id="ch-intent" style="height:300px"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- PLATFORM MODULES -->
+<section style="padding:4rem 0;background:var(--white);border-top:1px solid var(--border)">
+  <div class="container">
+    <div class="section-label">Platform Modules</div>
+    <h2 class="mb-lg">Explore the full platform</h2>
+    <div class="nav-cards">
+      <a href="pages/customer-intelligence.html" class="nav-card"><div class="nav-card-label">Descriptive · Diagnostic</div><div class="nav-card-title">Customer Intelligence</div><div class="nav-card-desc">Demographics, persona radar, Sankey flows, segment deep-dive, fashion behaviour analysis.</div><div class="nav-card-arrow">→</div></a>
+      <a href="pages/prediction-lab.html" class="nav-card"><div class="nav-card-label">Predictive</div><div class="nav-card-title">Prediction Lab</div><div class="nav-card-desc">XGBoost, Random Forest, Logistic models. SHAP importance. CLV, churn. Live intent predictor.</div><div class="nav-card-arrow">→</div></a>
+      <a href="pages/recommendation-studio.html" class="nav-card"><div class="nav-card-label">Prescriptive</div><div class="nav-card-title">Recommendation Studio</div><div class="nav-card-desc">Persona-driven offers, market basket rules, dynamic pricing tiers, product intelligence.</div><div class="nav-card-arrow">→</div></a>
+      <a href="pages/forecasting-hub.html" class="nav-card"><div class="nav-card-label">Predictive</div><div class="nav-card-title">Forecasting Hub</div><div class="nav-card-desc">52-week revenue forecast, demand curves, interactive marketing budget simulator.</div><div class="nav-card-arrow">→</div></a>
+      <a href="pages/executive-insights.html" class="nav-card"><div class="nav-card-label">Prescriptive</div><div class="nav-card-title">Executive Insights</div><div class="nav-card-desc">C-suite KPIs, strategic priority matrix, correlation heatmap, decision support.</div><div class="nav-card-arrow">→</div></a>
+      <a href="pages/about.html" class="nav-card"><div class="nav-card-label">Project</div><div class="nav-card-title">About & Methodology</div><div class="nav-card-desc">Survey design, data generation, ML pipeline, team, and technical architecture.</div><div class="nav-card-arrow">→</div></a>
+    </div>
+  </div>
+</section>
+
+<footer class="footer"><div class="container"><div class="footer-inner">
+  <span class="footer-brand">Archive 27</span>
+  <span>Fashion Thrift · Analytics Platform</span>
+  <span>Peehu Manglik · Arnav Jain · Havisha Agarwal · Syed Ali</span>
+</div></div></footer>
+</div>
+
+<script src="https://cdn.plot.ly/plotly-2.32.0.min.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/data.js"></script>
+<script>
+const D=window.A27_DATA, A=window.A27;
+A.buildNav('home',true);
+
+// Counters
+setTimeout(()=>{
+  A.counter(document.getElementById('st-resp'),10000,1600);
+  A.counter(document.getElementById('st-feat'),56,1200);
+  A.counter(document.getElementById('st-pers'),6,800);
+  A.counter(document.getElementById('st-int'),Math.round(D.overview.likely_buyers/D.overview.total*100),1200,'','%');
+},200);
+
+// KPIs
+document.getElementById('kpi-row').innerHTML=[
+  {l:'Likely Buyers',v:D.overview.likely_buyers.toLocaleString('en-IN'),d:'55.2% of base',c:'pos'},
+  {l:'Nurture Pipeline',v:D.overview.maybe.toLocaleString('en-IN'),d:'35% convertible',c:'neu'},
+  {l:'Median Spend/mo',v:'₹1,750',d:'Mid-premium range',c:'pos'},
+  {l:'Top CLV Segment',v:'₹32,100',d:'Conscious Spender',c:'pos'},
+].map(k=>`<div class="kpi"><div class="kpi-label">${k.l}</div><div class="kpi-value ${k.c==='pos'?'accent':''}">${k.v}</div><div class="kpi-delta ${k.c}">${k.d}</div></div>`).join('');
+
+// Charts — run after Plotly loads
+window.addEventListener('load',()=>{
+  A.plot('ch-persona',[{
+    type:'pie',hole:.48,labels:A.PO,values:A.PO.map(p=>D.overview.personas[p]||0),
+    marker:{colors:A.PO.map(p=>A.PC[p]),line:{color:'#F2EFE9',width:2}},
+    textinfo:'percent',textfont:{size:10},sort:false,
+    hovertemplate:'<b>%{label}</b><br>%{value:,}<br>%{percent}<extra></extra>',
+  }],{margin:{t:10,b:10,l:10,r:10},showlegend:true,
+    legend:{orientation:'v',font:{size:10},x:1,y:.5,xanchor:'left',bgcolor:'rgba(0,0,0,0)'},
+    annotations:[{text:'10K',x:.5,y:.5,showarrow:false,font:{size:13,color:'#9A9A90',family:'Cormorant Garamond'}}]});
+
+  A.plot('ch-intent',[
+    {k:'Interested',c:'#4A6741'},{k:'Maybe',c:'#8B6914'},{k:'Not Interested',c:'#8B3A2A'}
+  ].map(it=>({type:'bar',name:it.k,x:A.PO,
+    y:A.PO.map(p=>Math.round((D.segments[p]?.intent[it.k]||0)*100)),
+    marker:{color:it.c},hovertemplate:it.k+' · %{x}: %{y}%<extra></extra>'})),
+  {barmode:'stack',xaxis:{tickangle:-20,tickfont:{size:9}},yaxis:{ticksuffix:'%'},
+    legend:{orientation:'h',y:-0.28,font:{size:10}},margin:{t:10,b:90,l:45,r:10}});
+});
+</script>
+</body>
+</html>
