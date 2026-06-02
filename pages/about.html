@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>About · Archive 27</title>
+<link rel="stylesheet" href="../css/main.css"/>
+<style>
+.team-card{background:var(--white);border:1px solid var(--border);border-radius:var(--r-lg);padding:2rem;text-align:center;box-shadow:var(--shadow);transition:var(--t)}
+.team-card:hover{box-shadow:var(--shadow-md);transform:translateY(-2px)}
+.team-avatar{width:64px;height:64px;border-radius:50%;background:var(--cream-2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:1.4rem;margin:0 auto 1rem}
+.team-name{font-family:var(--font-serif);font-size:1.25rem;color:var(--ink);margin-bottom:.25rem}
+.team-role{font-size:.76rem;color:var(--ink-3);line-height:1.6}
+.tl{position:relative;padding-left:2rem}
+.tl::before{content:'';position:absolute;left:.4rem;top:0;bottom:0;width:1px;background:linear-gradient(to bottom,var(--gold),transparent)}
+.tl-item{position:relative;margin-bottom:1.75rem}
+.tl-item::before{content:'';position:absolute;left:-1.8rem;top:.35rem;width:8px;height:8px;border-radius:50%;background:var(--gold);border:2px solid var(--cream-2)}
+.tl-title{font-weight:600;font-size:.85rem;color:var(--ink);margin-bottom:.2rem}
+.tl-desc{font-size:.78rem;color:var(--ink-3);line-height:1.65}
+</style>
+</head>
+<body>
+<nav class="nav" id="main-nav"></nav>
+<div class="page"><div class="container">
+
+<div class="page-header">
+  <div class="page-header-eyebrow label">About the Project</div>
+  <h1>Archive 27<br/><em>Analytics Platform</em></h1>
+  <p>A full-stack predictive and prescriptive analytics project — from survey design to 10K dataset, real ML models, and this deployed platform.</p>
+  <div class="page-header-tags">
+    <span class="tag tag-gold">Data Analytics</span><span class="tag tag-sage">Group Project</span>
+  </div>
+</div>
+
+<!-- Team -->
+<div class="section-label mb-md">The Team</div>
+<div class="grid-4 mb-lg">
+  <div class="team-card"><div class="team-avatar">👩</div><div class="team-name">Peehu Manglik</div><div class="team-role">Analytics Lead · Data Modelling · Platform Architecture</div></div>
+  <div class="team-card"><div class="team-avatar">👨</div><div class="team-name">Arnav Jain</div><div class="team-role">ML Pipeline · Predictive Models · SHAP Analysis</div></div>
+  <div class="team-card"><div class="team-avatar">👩</div><div class="team-name">Havisha Agarwal</div><div class="team-role">Survey Design · Data Collection · Descriptive Analytics</div></div>
+  <div class="team-card"><div class="team-avatar">👨</div><div class="team-name">Syed Ali</div><div class="team-role">Prescriptive Analytics · Dashboard Design · Deployment</div></div>
+</div>
+
+<!-- Brand + Project -->
+<div class="grid-2 mb-lg">
+  <div class="card">
+    <div class="section-label mb-md">Brand Profile</div>
+    <table class="data-table"><tbody>
+      <tr><td style="color:var(--ink-3)">Brand</td><td class="val-gold">Archive 27</td></tr>
+      <tr><td style="color:var(--ink-3)">Category</td><td>Curated Thrift Fashion · India</td></tr>
+      <tr><td style="color:var(--ink-3)">Channel</td><td>Instagram-first, digital-native</td></tr>
+      <tr><td style="color:var(--ink-3)">Target Market</td><td>18–30, Metro + Tier 2, Fashion-forward</td></tr>
+      <tr><td style="color:var(--ink-3)">Brand Values</td><td>Affordable · Unique · Sustainable</td></tr>
+    </tbody></table>
+  </div>
+  <div class="card">
+    <div class="section-label mb-md">Project Stats</div>
+    <table class="data-table"><tbody>
+      <tr><td style="color:var(--ink-3)">Dataset</td><td class="val-gold">10,000 rows · 56 columns</td></tr>
+      <tr><td style="color:var(--ink-3)">Original Survey</td><td>2,000 responses</td></tr>
+      <tr><td style="color:var(--ink-3)">Personas Identified</td><td>6 distinct archetypes</td></tr>
+      <tr><td style="color:var(--ink-3)">ML Models Trained</td><td>XGBoost · RF · Logistic</td></div></tr>
+      <tr><td style="color:var(--ink-3)">Best Model AUC</td><td class="val-gold">0.700 (Logistic Regression)</td></tr>
+      <tr><td style="color:var(--ink-3)">Pre-computed Combos</td><td>2,880 lookup entries</td></tr>
+    </tbody></table>
+  </div>
+</div>
+
+<!-- Tabs -->
+<div class="tabs-wrap">
+  <div class="tab-nav">
+    <button class="tab-btn active" data-tab="survey">Survey Design</button>
+    <button class="tab-btn" data-tab="datagen">Data Generation</button>
+    <button class="tab-btn" data-tab="ml">ML Models</button>
+    <button class="tab-btn" data-tab="tech">Tech Stack</button>
+  </div>
+
+  <div class="tab-panel active" data-tab="survey">
+    <div class="grid-2 mb-lg">
+      <div>
+        <div class="section-label mb-md">Survey Structure</div>
+        <div class="grid-2 mb-md">
+          <div class="kpi"><div class="kpi-label">Questions</div><div class="kpi-value accent">25</div><div class="kpi-delta neu">~5 min</div></div>
+          <div class="kpi"><div class="kpi-label">Original Responses</div><div class="kpi-value">2,000</div><div class="kpi-delta neu">India-wide</div></div>
+        </div>
+        <div class="card"><div class="label mb-sm">Domain Mapping</div>
+          <table class="data-table"><thead><tr><th>Domain</th><th>Questions</th><th>Use</th></tr></thead><tbody>
+            <tr><td>Demographics</td><td class="mono">Q1–Q5</td><td>Segmentation</td></tr>
+            <tr><td>Fashion Behaviour</td><td class="mono">Q6–Q10</td><td>Clustering</td></tr>
+            <tr><td>Budget & Spend</td><td class="mono">Q11–Q14</td><td>Regression · CLV</td></tr>
+            <tr><td>Product Preferences</td><td class="mono">Q15–Q20</td><td>Basket Analysis</td></tr>
+            <tr><td>Thrift Attitudes</td><td class="mono">Q21–Q25</td><td>Churn · Trust</td></tr>
+          </tbody></table>
+        </div>
+      </div>
+      <div>
+        <div class="section-label mb-md">Analytics Layers</div>
+        <div class="grid-2">
+          <div class="card" style="border-top:3px solid var(--gold)"><div style="font-weight:700;color:var(--gold);margin-bottom:.4rem">Descriptive</div><div style="font-size:.76rem;color:var(--ink-3)">Who? What? Where? Distribution and demographic profiling.</div></div>
+          <div class="card" style="border-top:3px solid var(--navy)"><div style="font-weight:700;color:var(--navy);margin-bottom:.4rem">Diagnostic</div><div style="font-size:.76rem;color:var(--ink-3)">Why? Correlations, cross-tabs, barrier analysis.</div></div>
+          <div class="card" style="border-top:3px solid var(--sage)"><div style="font-weight:700;color:var(--sage);margin-bottom:.4rem">Predictive</div><div style="font-size:.76rem;color:var(--ink-3)">What will happen? ML models, CLV, churn, forecasting.</div></div>
+          <div class="card" style="border-top:3px solid var(--rust)"><div style="font-weight:700;color:var(--rust);margin-bottom:.4rem">Prescriptive</div><div style="font-size:.76rem;color:var(--ink-3)">What to do? Recommendations, pricing, allocation.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tab-panel" data-tab="datagen">
+    <div class="grid-2">
+      <div>
+        <div class="section-label mb-md">Generation Methodology</div>
+        <div class="insight gold mb-md"><strong>Persona-conditioned probabilistic sampling</strong> — 330 per-persona distributions extracted from 2,000 original rows, used as generation priors with Dirichlet noise.</div>
+        <div class="tl">
+          <div class="tl-item"><div class="tl-title">Step 1 — Extract Per-Persona Distributions</div><div class="tl-desc">330 distributions extracted (6 personas × 55 columns) from original 2K dataset.</div></div>
+          <div class="tl-item"><div class="tl-title">Step 2 — Dirichlet Noise Injection</div><div class="tl-desc">α = real_freq × 80 + 0.5 per categorical prior to simulate natural survey variance.</div></div>
+          <div class="tl-item"><div class="tl-title">Step 3 — Persona-Conditioned Sampling</div><div class="tl-desc">Each row assigned to a persona, all 55 columns sampled from that persona's distributions.</div></div>
+          <div class="tl-item"><div class="tl-title">Step 4 — Missing Value Replication</div><div class="tl-desc">style_secondary ~51.4% missing replicated exactly to match original patterns.</div></div>
+          <div class="tl-item"><div class="tl-title">Step 5 — Validation</div><div class="tl-desc">Binary column means within ±3.5%, persona proportions exact (±0%).</div></div>
+        </div>
+      </div>
+      <div>
+        <div class="section-label mb-md">Validation Chart</div>
+        <div class="chart-wrap"><div id="c-valid" style="height:280px"></div></div>
+        <div class="card mt-md">
+          <table class="data-table"><tbody>
+            <tr><td style="color:var(--ink-3)">Original</td><td class="val-gold">2,000 rows</td></tr>
+            <tr><td style="color:var(--ink-3)">Expanded</td><td class="val-gold">10,000 rows</td></tr>
+            <tr><td style="color:var(--ink-3)">Missing pattern</td><td class="val-sage">✓ Preserved</td></tr>
+            <tr><td style="color:var(--ink-3)">Distribution drift</td><td class="val-gold">≤3.5%</td></tr>
+          </tbody></table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tab-panel" data-tab="ml">
+    <div class="grid-3 mb-lg">
+      <div class="card" style="border-top:3px solid var(--gold)"><div style="font-weight:700;color:var(--gold);margin-bottom:.5rem">⚡ XGBoost</div><div style="font-size:.78rem;color:var(--ink-3);line-height:1.7;margin-bottom:.75rem">Gradient Boosted Trees — trained on 8,000 rows, tested on 2,000. Non-linear interactions captured.</div><span class="tag tag-gold">AUC 0.681</span> <span class="tag tag-gold">Acc 57.9%</span></div>
+      <div class="card" style="border-top:3px solid var(--sage)"><div style="font-weight:700;color:var(--sage);margin-bottom:.5rem">🌲 Random Forest</div><div style="font-size:.78rem;color:var(--ink-3);line-height:1.7;margin-bottom:.75rem">200-tree ensemble — robust generalisation, low variance. Used for feature importance cross-validation.</div><span class="tag tag-sage">AUC 0.696</span> <span class="tag tag-sage">Acc 58.2%</span></div>
+      <div class="card" style="border-top:3px solid var(--navy)"><div style="font-weight:700;color:var(--navy);margin-bottom:.5rem">📈 Logistic Regression</div><div style="font-size:.78rem;color:var(--ink-3);line-height:1.7;margin-bottom:.75rem">Interpretable baseline — fastest, explicit coefficients. Best AUC among the 3 models at 0.700.</div><span class="tag tag-navy">AUC 0.700</span> <span class="tag tag-navy">Acc 58.6%</span></div>
+    </div>
+    <div class="insight navy"><strong>Note on accuracy:</strong> Purchase intent is a 3-class problem (Interested / Maybe / Not Interested) with imbalanced classes (55% / 35% / 10%). ~58% accuracy is meaningful — it significantly outperforms the 55% naive baseline. AUC of 0.70 indicates good discriminative ability across all three classes.</div>
+  </div>
+
+  <div class="tab-panel" data-tab="tech">
+    <div class="grid-2">
+      <div class="card">
+        <div class="section-label mb-md">Frontend Stack</div>
+        <div style="display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1.25rem">
+          <span class="tag tag-gold">HTML5</span><span class="tag tag-gold">CSS3</span><span class="tag tag-gold">Vanilla JavaScript</span><span class="tag tag-gold">Plotly.js 2.32</span><span class="tag tag-gold">GitHub Pages</span>
+        </div>
+        <div class="section-label mb-md">Data & ML Stack</div>
+        <div style="display:flex;flex-wrap:wrap;gap:.5rem">
+          <span class="tag tag-sage">Python 3.12</span><span class="tag tag-sage">Pandas · NumPy</span><span class="tag tag-sage">scikit-learn</span><span class="tag tag-sage">GradientBoosting</span><span class="tag tag-sage">RandomForest</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="section-label mb-md">Architecture</div>
+        <div style="font-size:.8rem;color:var(--ink-2);line-height:2">
+          <div style="padding:.4rem 0;border-bottom:1px solid var(--border)">📊 Python trains 3 ML models on 10K dataset</div>
+          <div style="padding:.4rem 0;border-bottom:1px solid var(--border)">🔢 All 2,880 input combinations pre-computed</div>
+          <div style="padding:.4rem 0;border-bottom:1px solid var(--border)">💾 Results stored in <code class="mono">data.js</code> (393 KB)</div>
+          <div style="padding:.4rem 0;border-bottom:1px solid var(--border)">🌐 GitHub Pages serves static HTML/JS/CSS</div>
+          <div style="padding:.4rem 0">⚡ Browser does instant JSON key lookup &lt;1ms</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div></div>
+<footer class="footer"><div class="container"><div class="footer-inner">
+  <span class="footer-brand">Archive 27</span>
+  <span>Fashion Thrift · Analytics Platform</span>
+  <span>Peehu Manglik · Arnav Jain · Havisha Agarwal · Syed Ali</span>
+</div></div></footer>
+
+<script src="https://cdn.plot.ly/plotly-2.32.0.min.js"></script>
+<script src="../js/utils.js"></script>
+<script src="../js/data.js"></script>
+<script>
+const D=window.A27_DATA,A=window.A27;
+A.buildNav('about');
+
+A.reg('survey',()=>{});
+A.reg('datagen',()=>{
+  A.plot('c-valid',[{type:'bar',x:A.PO,y:A.PO.map(p=>D.segments[p].pct),
+    marker:{color:A.PO.map(p=>A.PC[p]),line:{color:'transparent'}},
+    text:A.PO.map(p=>D.segments[p].pct+'%'),textposition:'outside',
+    hovertemplate:'%{x}: %{y}%<extra></extra>'}],
+  {xaxis:{tickangle:-20,tickfont:{size:9}},yaxis:{ticksuffix:'%',title:{text:'% of Dataset'}},
+    showlegend:false,margin:{t:10,b:90,l:55,r:20}});
+});
+A.reg('ml',()=>{});
+A.reg('tech',()=>{});
+A.initTabs();
+</script>
+</body>
+</html>

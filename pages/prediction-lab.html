@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Prediction Lab · Archive 27</title>
+<link rel="stylesheet" href="../css/main.css"/>
+<style>
+.model-card{background:var(--white);border:1px solid var(--border);border-radius:var(--r-lg);padding:1.25rem;cursor:pointer;transition:var(--t);box-shadow:var(--shadow)}
+.model-card.sel{border-color:var(--gold);box-shadow:0 0 0 2px var(--gold-mid)}
+.mbadge{display:inline-flex;flex-direction:column;align-items:center;background:var(--cream);border-radius:var(--r);padding:.4rem .8rem}
+.mbadge-v{font-family:var(--font-mono);font-size:.9rem;font-weight:500;color:var(--gold)}
+.mbadge-l{font-size:.58rem;color:var(--ink-4);letter-spacing:.06em;text-transform:uppercase;margin-top:.15rem}
+.pred-result{background:var(--cream);border:1px solid var(--border);border-radius:var(--r-lg);padding:1.25rem;max-width:480px;margin-top:1.25rem}
+</style>
+</head>
+<body>
+<nav class="nav" id="main-nav"></nav>
+<div class="page"><div class="container">
+
+<div class="page-header">
+  <div class="page-header-eyebrow label">Prediction Lab</div>
+  <h1>Predict. Score.<br/><em>Act.</em></h1>
+  <p>Real machine learning models — XGBoost, Random Forest, Logistic Regression — trained on 10,000 responses. Pre-computed outputs for instant display.</p>
+  <div class="page-header-tags">
+    <span class="tag tag-navy">Predictive Analytics</span>
+    <span class="tag tag-gold">XGBoost · RF · LR</span>
+    <span class="tag tag-sage">SHAP Importance</span>
+  </div>
+</div>
+
+<!-- Model selector -->
+<div class="section-label mb-md">Select Model</div>
+<div class="grid-3 mb-lg" id="model-cards"></div>
+
+<div class="chart-wrap mb-lg">
+  <div class="chart-title" id="model-title">XGBoost — Performance Metrics</div>
+  <div class="chart-sub">Evaluated on 20% holdout set · Stratified by persona</div>
+  <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin:.75rem 0" id="metric-badges"></div>
+  <div id="c-model-perf" style="height:280px"></div>
+</div>
+
+<div class="grid-2 mb-lg">
+  <div class="chart-wrap"><div class="chart-title">SHAP Feature Importance</div><div class="chart-sub">Actual values from trained GBM model on 10K data</div><div id="c-shap" style="height:360px"></div></div>
+  <div class="chart-wrap"><div class="chart-title">Predicted vs Actual Intent</div><div class="chart-sub">Model output vs survey ground truth</div><div id="c-pred-actual" style="height:360px"></div></div>
+</div>
+
+<div class="section-label mb-md">Customer Lifetime Value</div>
+<div class="grid-2 mb-lg">
+  <div class="chart-wrap"><div class="chart-title">Predicted CLV by Persona</div><div class="chart-sub">12-month projected revenue per acquired customer</div><div id="c-clv" style="height:300px"></div></div>
+  <div class="chart-wrap"><div class="chart-title">Churn Risk by Persona</div><div class="chart-sub">Probability of not returning after first purchase</div><div id="c-churn" style="height:300px"></div></div>
+</div>
+
+<div class="chart-wrap mb-lg">
+  <div class="chart-title">CLV Intelligence Matrix</div>
+  <div style="overflow-x:auto"><table class="data-table" id="clv-table"></table></div>
+</div>
+
+<!-- Static ML predictor -->
+<div class="section-label mb-md">Purchase Intent Predictor</div>
+<div class="card mb-lg">
+  <div style="font-weight:600;font-size:.95rem;margin-bottom:.25rem">Live Intent Estimator</div>
+  <div class="label mb-lg">Select inputs below — results are pre-computed from trained XGBoost, Random Forest &amp; Logistic models</div>
+  <div class="grid-3 mb-lg" style="align-items:end">
+    <div><div class="label mb-sm" style="display:block">Persona</div>
+      <select id="p-persona"><option>Aesthetic Chaser</option><option>Conscious Spender</option><option>Bargain Hunter</option><option>Fence-Sitter</option><option>Occasional Gifter</option><option>Skeptic</option></select></div>
+    <div><div class="label mb-sm" style="display:block">Monthly Fashion Spend</div>
+      <select id="p-spend"><option>Under 500</option><option>500-1000</option><option selected>1000-2500</option><option>2500-5000</option><option>Above 5000</option></select></div>
+    <div><div class="label mb-sm" style="display:block">Prior Thrift Experience</div>
+      <select id="p-thrift"><option>Yes regularly</option><option selected>Yes a few times</option><option>No but open</option><option>No and unlikely</option></select></div>
+    <div><div class="label mb-sm" style="display:block">City Tier</div>
+      <select id="p-city"><option>Metro</option><option>Tier 2</option><option>Tier 3 / Small town</option><option>Rural</option></select></div>
+    <div><div class="label mb-sm" style="display:block">Age Group</div>
+      <select id="p-age"><option>Under 18</option><option>18-22</option><option selected>23-27</option><option>28-34</option><option>35-44</option><option>45+</option></select></div>
+    <div style="padding-top:1.4rem"><button class="btn btn-dark w-full" onclick="runPredict()">Get Prediction →</button></div>
+  </div>
+  <div id="predict-result"></div>
+</div>
+
+<div class="grid-2">
+  <div class="insight gold"><strong>Persona dominates predictions at 51%</strong> — the strongest single predictor. Knowing which persona a customer is immediately gives 51% of the predictive signal.</div>
+  <div class="insight sage"><strong>Conscious Spender CLV = ₹32,100</strong> — 7.8× higher than Skeptics. Acquisition budget should heavily prioritise this segment despite its smaller size.</div>
+</div>
+
+</div></div>
+<footer class="footer"><div class="container"><div class="footer-inner">
+  <span class="footer-brand">Archive 27</span><span>Prediction Lab</span>
+  <span>Peehu Manglik · Arnav Jain · Havisha Agarwal · Syed Ali</span>
+</div></div></footer>
+
+<script src="https://cdn.plot.ly/plotly-2.32.0.min.js"></script>
+<script src="../js/utils.js"></script>
+<script src="../js/data.js"></script>
+<script>
+const D=window.A27_DATA,A=window.A27;
+A.buildNav('pl');
+
+const MODELS=[
+  {key:'xgboost',label:'XGBoost',sub:'Gradient Boosting · Best AUC',c:'#8B6914'},
+  {key:'random_forest',label:'Random Forest',sub:'Ensemble · Robust',c:'#4A6741'},
+  {key:'logistic',label:'Logistic Regression',sub:'Baseline · Interpretable',c:'#2A3D5C'},
+];
+let selModel='xgboost';
+
+document.getElementById('model-cards').innerHTML=MODELS.map(m=>`
+  <div class="model-card${m.key===selModel?' sel':''}" id="mc-${m.key}" onclick="selMod('${m.key}')">
+    <div style="font-weight:600;font-size:.9rem;color:${m.c};margin-bottom:.2rem">${m.label}</div>
+    <div class="label">${m.sub}</div>
+    <div style="display:flex;gap:.4rem;flex-wrap:wrap;margin-top:.75rem" id="mb-${m.key}"></div>
+  </div>`).join('');
+
+MODELS.forEach(m=>{
+  const p=D.ml.performance[m.key];
+  document.getElementById('mb-'+m.key).innerHTML=
+    ['auc','accuracy','f1'].map(k=>`<div class="mbadge"><span class="mbadge-v">${p[k].toFixed(3)}</span><span class="mbadge-l">${k.toUpperCase()}</span></div>`).join('');
+});
+
+function selMod(key){
+  selModel=key;
+  document.querySelectorAll('.model-card').forEach(c=>c.classList.remove('sel'));
+  document.getElementById('mc-'+key).classList.add('sel');
+  const m=MODELS.find(x=>x.key===key),p=D.ml.performance[key];
+  document.getElementById('model-title').textContent=m.label+' — Performance Metrics';
+  document.getElementById('metric-badges').innerHTML=
+    ['accuracy','precision','recall','f1','auc'].map(k=>`<div class="mbadge"><span class="mbadge-v">${k==='auc'?p[k].toFixed(3):(p[k]*100).toFixed(1)+'%'}</span><span class="mbadge-l">${k.toUpperCase()}</span></div>`).join('');
+  const metrics=['Accuracy','Precision','Recall','F1'];
+  const vals=[p.accuracy,p.precision,p.recall,p.f1].map(v=>+(v*100).toFixed(1));
+  A.plot('c-model-perf',[{type:'bar',x:metrics,y:vals,
+    marker:{color:['#8B6914','#4A6741','#2A3D5C','#6B4F9E'],line:{color:'transparent'}},
+    text:vals.map(v=>v+'%'),textposition:'outside',
+    hovertemplate:'%{x}: %{y}%<extra></extra>'}],
+  {yaxis:{range:[40,80],ticksuffix:'%',title:{text:'Score (%)'}},margin:{t:10,b:50,l:60,r:20}});
+}
+selMod('xgboost');
+
+// SHAP
+const fi=D.ml.feature_importance.slice().sort((a,b)=>a.pct-b.pct);
+A.plot('c-shap',[{type:'bar',orientation:'h',
+  y:fi.map(f=>f.feature),x:fi.map(f=>f.pct),
+  marker:{color:'#8B6914',opacity:.85,line:{color:'transparent'}},
+  text:fi.map(f=>f.pct+'%'),textposition:'outside',
+  hovertemplate:'%{y}: %{x}%<extra></extra>'}],
+{xaxis:{ticksuffix:'%',range:[0,60],title:{text:'Feature Importance (%)'}},margin:{t:10,b:50,l:160,r:70}});
+
+// Predicted vs Actual
+const pva=D.ml.pred_vs_actual;
+A.plot('c-pred-actual',[
+  {type:'bar',name:'Actual',x:pva.labels,y:pva.actual,marker:{color:'#4A6741',opacity:.8,line:{color:'transparent'}},hovertemplate:'Actual %{x}: %{y:,}<extra></extra>'},
+  {type:'bar',name:'Predicted',x:pva.labels,y:pva.predicted,marker:{color:'#8B6914',opacity:.8,line:{color:'transparent'}},hovertemplate:'Predicted %{x}: %{y:,}<extra></extra>'},
+],{barmode:'group',yaxis:{title:{text:'Count'}},legend:{orientation:'h',y:-0.2},margin:{t:10,b:60,l:60,r:20}});
+
+// CLV
+A.plot('c-clv',[{type:'bar',x:A.PO,y:A.PO.map(p=>D.ml.clv[p]?.clv||0),
+  marker:{color:A.PO.map(p=>A.PC[p]),line:{color:'transparent'}},
+  text:A.PO.map(p=>'₹'+(D.ml.clv[p]?.clv||0).toLocaleString()),textposition:'outside',
+  hovertemplate:'%{x}<br>₹%{y:,}<extra></extra>'}],
+{xaxis:{tickangle:-20},yaxis:{title:{text:'₹ CLV (12M)'},tickprefix:'₹'},margin:{t:10,b:80,l:80,r:20}});
+
+A.plot('c-churn',[{type:'bar',x:A.PO,y:A.PO.map(p=>Math.round((D.ml.clv[p]?.churn||0)*100)),
+  marker:{color:A.PO.map(p=>{const r=D.ml.clv[p]?.churn||0;return r>0.5?'#8B3A2A':r>0.3?'#8B6914':'#4A6741';}),line:{color:'transparent'}},
+  text:A.PO.map(p=>Math.round((D.ml.clv[p]?.churn||0)*100)+'%'),textposition:'outside',
+  hovertemplate:'%{x}<br>%{y}% churn risk<extra></extra>'}],
+{xaxis:{tickangle:-20},yaxis:{ticksuffix:'%',title:{text:'Churn Risk %'},range:[0,85]},margin:{t:10,b:80,l:60,r:20}});
+
+document.getElementById('clv-table').innerHTML=`
+<thead><tr><th>Persona</th><th>Segment</th><th>12M CLV</th><th>Avg Order</th><th>Freq/yr</th><th>Churn Risk</th><th>Priority</th></tr></thead>
+<tbody>${A.PO.map(p=>{const s=D.segments[p],c=D.ml.clv[p],col=A.PC[p];
+  const pri=c.clv>20000?'🔥 High':c.clv>10000?'⚡ Medium':'→ Nurture';
+  const rc=c.churn>0.5?'val-rust':c.churn>0.3?'val-gold':'val-sage';
+  return`<tr><td><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${col};margin-right:.5rem"></span>${p}</td>
+    <td>${s.pct}%</td><td class="val-gold">₹${c.clv.toLocaleString()}</td>
+    <td>₹${c.avg_order.toLocaleString()}</td><td>${c.freq}×</td>
+    <td class="${rc}">${Math.round(c.churn*100)}%</td><td>${pri}</td></tr>`;}).join('')}
+</tbody>`;
+
+// Static lookup predictor
+function runPredict(){
+  const persona=document.getElementById('p-persona').value;
+  const spend=document.getElementById('p-spend').value;
+  const thrift=document.getElementById('p-thrift').value;
+  const city=document.getElementById('p-city').value;
+  const age=document.getElementById('p-age').value;
+  const key=`${persona}|${spend}|${thrift}|${city}|${age}`;
+  const lk=D.ml_lookup.lookup[key];
+  if(!lk){document.getElementById('predict-result').innerHTML='<div class="insight rust">Combination not found in lookup table.</div>';return;}
+  const cls=D.ml_lookup.classes;
+  const xgb=lk.xgb,rf=lk.rf,lr=lk.lr;
+  const topIdx=xgb.indexOf(Math.max(...xgb));
+  const topLabel=cls[topIdx];
+  const topProb=Math.round(xgb[topIdx]*100);
+  const barColor=topLabel==='Interested'?'#4A6741':topLabel==='Maybe'?'#8B6914':'#8B3A2A';
+  document.getElementById('predict-result').innerHTML=`
+    <div class="pred-result">
+      <div class="label mb-sm">Predicted Outcome (XGBoost)</div>
+      <div style="font-family:var(--font-serif);font-size:2.5rem;color:${barColor};line-height:1;margin-bottom:.3rem">${topLabel}</div>
+      <div class="label mb-lg">${topProb}% probability</div>
+      <div class="progress mb-lg"><div class="progress-fill" style="width:${topProb}%;background:${barColor}"></div></div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem">
+        ${cls.map((c,i)=>`<div style="text-align:center">
+          <div class="label">${c}</div>
+          <div style="font-family:var(--font-mono);color:var(--gold);font-size:.85rem;margin:.2rem 0">XGB: ${Math.round(xgb[i]*100)}%</div>
+          <div style="font-family:var(--font-mono);font-size:.75rem;color:var(--ink-3)">RF: ${Math.round(rf[i]*100)}%</div>
+          <div style="font-family:var(--font-mono);font-size:.75rem;color:var(--ink-3)">LR: ${Math.round(lr[i]*100)}%</div>
+        </div>`).join('')}
+      </div>
+    </div>`;
+}
+</script>
+</body>
+</html>

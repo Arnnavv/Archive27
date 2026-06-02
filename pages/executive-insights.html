@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Executive Insights · Archive 27</title>
+<link rel="stylesheet" href="../css/main.css"/>
+<style>
+.pri-item{display:flex;gap:1rem;padding:.85rem 0;border-bottom:1px solid var(--border);align-items:flex-start}
+.pri-item:last-child{border-bottom:none}
+.pri-n{font-family:var(--font-mono);font-size:1rem;color:var(--gold);min-width:28px;flex-shrink:0}
+.pri-t{font-weight:600;font-size:.85rem;color:var(--ink);margin-bottom:.2rem}
+.pri-d{font-size:.76rem;color:var(--ink-3);line-height:1.6}
+.dec-card{background:var(--white);border:1px solid var(--border);border-radius:var(--r-lg);padding:1.25rem;box-shadow:var(--shadow);margin-bottom:.75rem}
+.dec-q{font-weight:600;font-size:.88rem;color:var(--ink);margin-bottom:.6rem}
+.dec-a{font-size:.8rem;color:var(--ink-2);line-height:1.7;padding:.65rem;background:var(--cream);border-radius:var(--r);border-left:2px solid var(--gold)}
+</style>
+</head>
+<body>
+<nav class="nav" id="main-nav"></nav>
+<div class="page"><div class="container">
+
+<div class="page-header">
+  <div class="page-header-eyebrow label">Executive Insights</div>
+  <h1>Strategy. Decisions.<br/><em>Growth.</em></h1>
+  <p>C-suite analytics synthesising all findings into actionable business intelligence — KPI scorecards, strategic priority matrix, and decision support.</p>
+  <div class="page-header-tags">
+    <span class="tag tag-rust">Prescriptive</span><span class="tag tag-gold">Executive Summary</span><span class="tag tag-sage">Strategic Recommendations</span>
+  </div>
+</div>
+
+<div class="section-label mb-md">Master KPI Dashboard</div>
+<div class="grid-4 mb-md" id="e-kpi1"></div>
+<div class="grid-4 mb-lg" id="e-kpi2"></div>
+
+<div class="grid-2 mb-lg">
+  <div class="chart-wrap"><div class="chart-title">CLV × Segment Size Matrix</div><div class="chart-sub">Bubble = population · target top-right quadrant</div><div id="c-clv-mat" style="height:320px"></div></div>
+  <div class="chart-wrap"><div class="chart-title">Segment ROI Priority</div><div class="chart-sub">CLV vs Churn Risk · Top-left = invest here</div><div id="c-roi" style="height:320px"></div></div>
+</div>
+
+<div class="chart-wrap mb-lg"><div class="chart-title">Customer Conversion Funnel</div><div class="chart-sub">Awareness → Interest → Intent → Purchase</div><div id="c-funnel" style="height:340px"></div></div>
+
+<div class="grid-2 mb-lg">
+  <div class="card"><div style="font-weight:600;font-size:.92rem;margin-bottom:1rem">Strategic Priority Matrix</div><div id="pri-list"></div></div>
+  <div><div class="section-label mb-md">Decision Support</div><div id="dec-cards"></div></div>
+</div>
+
+<div class="chart-wrap mb-lg"><div class="chart-title">Feature Correlation Heatmap</div><div class="chart-sub">Key variable relationships — spend, income, intent, clothing preferences</div><div id="c-heat" style="height:380px"></div></div>
+
+<div class="section-label mb-md">Objectives Scorecard</div>
+<div class="chart-wrap mb-lg"><div style="overflow-x:auto"><table class="data-table" id="obj-table"></table></div></div>
+
+<div class="section-label mb-md">Top 5 Recommendations</div>
+<div class="grid-2 mb-lg" id="recs"></div>
+
+</div></div>
+<footer class="footer"><div class="container"><div class="footer-inner">
+  <span class="footer-brand">Archive 27</span><span>Executive Insights</span>
+  <span>Peehu Manglik · Arnav Jain · Havisha Agarwal · Syed Ali</span>
+</div></div></footer>
+
+<script src="https://cdn.plot.ly/plotly-2.32.0.min.js"></script>
+<script src="../js/utils.js"></script>
+<script src="../js/data.js"></script>
+<script>
+const D=window.A27_DATA,A=window.A27;
+A.buildNav('ei');
+
+document.getElementById('e-kpi1').innerHTML=[
+  {l:'Total Addressable',v:'10,000',d:'Survey respondents',c:'neu'},
+  {l:'Purchase-Ready',v:'5,522',d:'55.2% conversion-ready',c:'pos'},
+  {l:'Nurture Pipeline',v:'3,496',d:'35% convertible Maybe',c:'neu'},
+  {l:'Projected 12M Rev.',v:'₹8.4L+',d:'Conservative estimate',c:'pos'},
+].map(k=>`<div class="kpi"><div class="kpi-label">${k.l}</div><div class="kpi-value ${k.c==='pos'?'accent':''}">${k.v}</div><div class="kpi-delta ${k.c}">${k.d}</div></div>`).join('');
+
+document.getElementById('e-kpi2').innerHTML=[
+  {l:'Top CLV Segment',v:'₹32,100',d:'Conscious Spender 12M',c:'pos'},
+  {l:'Highest Intent',v:'82%',d:'Aesthetic Chaser',c:'pos'},
+  {l:'Mystery Box WTP',v:'90.7%',d:'Would purchase',c:'pos'},
+  {l:'Best Model AUC',v:'0.700',d:'Logistic Regression',c:'pos'},
+].map(k=>`<div class="kpi"><div class="kpi-label">${k.l}</div><div class="kpi-value ${k.c==='pos'?'accent':''}">${k.v}</div><div class="kpi-delta ${k.c}">${k.d}</div></div>`).join('');
+
+A.plot('c-clv-mat',A.PO.map(p=>({type:'scatter',mode:'markers+text',name:p,
+  x:[D.segments[p].pct],y:[D.ml.clv[p].clv],
+  marker:{size:D.segments[p].n/80,color:A.PC[p],opacity:.8,line:{color:A.PC[p],width:1.5}},
+  text:[p],textposition:'top center',textfont:{size:9,color:'#6B6B64'},
+  hovertemplate:'<b>'+p+'</b><br>Segment: %{x}%<br>CLV: ₹%{y:,}<extra></extra>'})),
+{xaxis:{title:{text:'Segment Size (%)'},ticksuffix:'%'},yaxis:{title:{text:'12M CLV (₹)'},tickprefix:'₹'},showlegend:false,margin:{t:20,b:60,l:80,r:20}});
+
+A.plot('c-roi',A.PO.map(p=>({type:'scatter',mode:'markers+text',name:p,
+  x:[Math.round(D.ml.clv[p].churn*100)],y:[D.ml.clv[p].clv],
+  marker:{size:24,color:A.PC[p],opacity:.85,line:{color:A.PC[p],width:1}},
+  text:[p.split(' ')[0]],textposition:'top center',textfont:{size:9,color:'#6B6B64'},
+  hovertemplate:'<b>'+p+'</b><br>Churn: %{x}%<br>CLV: ₹%{y:,}<extra></extra>'})),
+{xaxis:{title:{text:'Churn Risk (%)'},ticksuffix:'%'},yaxis:{title:{text:'12M CLV (₹)'},tickprefix:'₹'},showlegend:false,margin:{t:20,b:60,l:80,r:20},
+  shapes:[{type:'line',x0:30,y0:0,x1:30,y1:35000,line:{color:'#D5D0C5',dash:'dot',width:1}},{type:'line',x0:0,y0:15000,x1:80,y1:15000,line:{color:'#D5D0C5',dash:'dot',width:1}}],
+  annotations:[{x:12,y:30000,text:'🔥 Invest',showarrow:false,font:{size:9,color:'#4A6741'},bgcolor:'rgba(74,103,65,.1)',borderpad:4},{x:60,y:4500,text:'⚠️ Low ROI',showarrow:false,font:{size:9,color:'#8B3A2A'},bgcolor:'rgba(139,58,42,.1)',borderpad:4}]});
+
+A.plot('c-funnel',[{type:'funnel',y:['Aware of Thrift','Open to Thrift','Considering A27','Likely to Purchase','Ready to Buy'],
+  x:[10000,7800,6300,5522,3840],textinfo:'value+percent initial',
+  marker:{color:['#E0DBD0','#C5BFB0','#A89A80','#8B7040','#8B6914']},
+  connector:{line:{color:'#D5D0C5',width:1}},hovertemplate:'%{y}<br>%{x:,} (%{percentInitial})<extra></extra>'}],
+{margin:{t:10,b:20,l:20,r:20}});
+
+document.getElementById('pri-list').innerHTML=[
+  {n:'01',t:'Launch Y2K + Streetwear drops on Instagram',d:'Highest intent segments (65–68%). Weekly drop cadence, styled Reels.',tag:'tag-sage'},
+  {n:'02',t:'Implement COD + Easy Returns',d:'Top barrier for Fence-Sitters. Removing this unlocks 35% of pipeline.',tag:'tag-gold'},
+  {n:'03',t:'Build Mystery Box subscription path',d:'90.7% willing to buy. Start one-off, nurture to subscription. Margin: 71%.',tag:'tag-sage'},
+  {n:'04',t:'Activate WhatsApp broadcast for drops',d:'20% already discover via WhatsApp. Build pre-launch list for flash sales.',tag:'tag-gold'},
+  {n:'05',t:'Conscious Spender premium experience',d:'Highest CLV (₹32,100). Sustainability + upcycled line + trade-in.',tag:'tag-sage'},
+  {n:'06',t:'Trust-first strategy for Skeptics',d:'19.75% of market. Social proof, reviews, COD prominent.',tag:'tag-navy'},
+].map(p=>`<div class="pri-item"><div class="pri-n">${p.n}</div><div><div class="pri-t">${p.t} <span class="tag ${p.tag}" style="font-size:.55rem;vertical-align:middle;margin-left:.25rem">${p.tag.includes('sage')?'HIGH':p.tag.includes('gold')?'MED':'STRAT'}</span></div><div class="pri-d">${p.d}</div></div></div>`).join('');
+
+document.getElementById('dec-cards').innerHTML=[
+  {q:'Which segment gets most marketing spend?',a:'Aesthetic Chasers (29%) first for volume. Conscious Spenders second for premium CLV. Avoid over-spending on Skeptics (5.25%).'},
+  {q:'Should we offer broad discounts?',a:'No. Aesthetic Chasers and Conscious Spenders are motivated by curation and sustainability — blanket discounting erodes brand equity.'},
+  {q:'When to launch subscription model?',a:'After 3–6 months of one-off data. Start with Mystery Box subscription targeting Conscious Spenders and Aesthetic Chasers first.'},
+].map(d=>`<div class="dec-card"><div class="dec-q">❓ ${d.q}</div><div class="dec-a">→ ${d.a}</div></div>`).join('');
+
+const cr=D.correlations;
+A.plot('c-heat',[{type:'heatmap',z:cr.matrix,x:cr.labels,y:cr.labels,
+  colorscale:[[0,'#8B3A2A'],[0.5,'#F2EFE9'],[1,'#4A6741']],zmid:0,
+  text:cr.matrix.map(row=>row.map(v=>v.toFixed(2))),texttemplate:'%{text}',textfont:{size:8,color:'#3A3A36'},
+  hovertemplate:'%{y} × %{x}<br>r = %{z:.3f}<extra></extra>'}],
+{margin:{t:20,b:120,l:120,r:20},xaxis:{tickangle:-35,tickfont:{size:9}},yaxis:{tickfont:{size:9}}});
+
+document.getElementById('obj-table').innerHTML=`
+<thead><tr><th>Objective</th><th>KPI</th><th>Status</th><th>Target</th><th>Forecast</th></tr></thead>
+<tbody>${[
+  {o:'≥20% revenue growth',k:'Revenue Week 52 vs 1',s:'On Track',t:'₹1.25L/wk',f:'₹1.41L/wk'},
+  {o:'10,000 Instagram followers',k:'Follower growth rate',s:'Projectable',t:'10,000',f:'~12,400'},
+  {o:'Recognisable aesthetic in 2 styles',k:'Y2K + Streetwear intent',s:'Validated',t:'2 styles',f:'Y2K 67% · SW 65%'},
+  {o:'Personalised recommendations live',k:'ML model accuracy',s:'Complete',t:'>70% acc',f:'70% AUC 0.700'},
+].map(o=>`<tr><td>${o.o}</td><td style="color:var(--ink-3)">${o.k}</td><td><span class="tag tag-sage">${o.s}</span></td><td class="mono">${o.t}</td><td class="val-gold">${o.f}</td></tr>`).join('')}
+</tbody>`;
+
+document.getElementById('recs').innerHTML=[
+  {icon:'🎨',t:'Y2K Drop Launch Strategy',b:'Weekly Y2K + Streetwear drops on Fridays. Reels-first, styled content. Target 18–24 Metro females. Price: ₹800–1,500.',c:'#6B4F9E'},
+  {icon:'♻️',t:'Conscious Spender Premium Line',b:'Dedicated upcycled + ethical line. Trade-in programme, sustainability credentials, ₹1,500–3,500 pricing.',c:'#4A6741'},
+  {icon:'📦',t:'Mystery Box as Acquisition Tool',b:'₹500–800 mystery box as low-risk first purchase. 90.7% willing. Subscription upsell after first box.',c:'#8B6914'},
+  {icon:'🛡️',t:'Trust Architecture for Fence-Sitters',b:'COD, easy returns, size guides, 500+ customer photos. Unlocks 35% "Maybe" pipeline.',c:'#2A3D5C'},
+  {icon:'📊',t:'Data-Driven Drop Calendar',b:'Use ML intent scores to time drops. Festive Oct–Dec: double inventory. +78% YoY growth projected.',c:'#8B3A2A'},
+].map(r=>`<div class="card" style="border-top:3px solid ${r.c}"><div style="font-size:1.6rem;margin-bottom:.6rem">${r.icon}</div><div style="font-weight:700;font-size:.9rem;color:${r.c};margin-bottom:.5rem">${r.t}</div><div style="font-size:.8rem;color:var(--ink-3);line-height:1.7">${r.b}</div></div>`).join('');
+</script>
+</body>
+</html>

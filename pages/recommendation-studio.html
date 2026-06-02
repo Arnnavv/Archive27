@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Recommendation Studio · Archive 27</title>
+<link rel="stylesheet" href="../css/main.css"/>
+</head>
+<body>
+<nav class="nav" id="main-nav"></nav>
+<div class="page"><div class="container">
+
+<div class="page-header">
+  <div class="page-header-eyebrow label">Recommendation Studio</div>
+  <h1>Right offer.<br/><em>Right person.</em></h1>
+  <p>Persona-driven recommendation engine, market basket association rules, dynamic pricing tiers, and product intelligence.</p>
+  <div class="page-header-tags">
+    <span class="tag tag-rust">Prescriptive</span><span class="tag tag-gold">Market Basket</span><span class="tag tag-sage">Dynamic Pricing</span>
+  </div>
+</div>
+
+<div class="section-label mb-md">Persona Recommendation Engine</div>
+<div class="card mb-lg">
+  <div style="font-weight:600;font-size:.95rem;margin-bottom:.5rem">Live Offer Recommendations</div>
+  <div class="label mb-lg">Select a persona to see personalised product, channel, pricing and messaging recommendations</div>
+  <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.5rem" id="rec-btns">
+    <button class="btn btn-dark btn-sm" onclick="loadRec('Aesthetic Chaser',this)">Aesthetic Chaser</button>
+    <button class="btn btn-outline btn-sm" onclick="loadRec('Conscious Spender',this)">Conscious Spender</button>
+    <button class="btn btn-outline btn-sm" onclick="loadRec('Bargain Hunter',this)">Bargain Hunter</button>
+    <button class="btn btn-outline btn-sm" onclick="loadRec('Fence-Sitter',this)">Fence-Sitter</button>
+    <button class="btn btn-outline btn-sm" onclick="loadRec('Occasional Gifter',this)">Occasional Gifter</button>
+    <button class="btn btn-outline btn-sm" onclick="loadRec('Skeptic',this)">Skeptic</button>
+  </div>
+  <div id="rec-out"></div>
+</div>
+
+<div class="section-label mb-md">Market Basket Analysis</div>
+<div class="grid-2 mb-lg">
+  <div class="chart-wrap"><div class="chart-title">Top Association Rules by Lift</div><div class="chart-sub">Items bought together more than by chance</div><div id="c-lift" style="height:320px"></div></div>
+  <div class="chart-wrap"><div class="chart-title">Support vs Confidence</div><div class="chart-sub">Bubble size = Lift · Top-right = best bundles</div><div id="c-bubble" style="height:320px"></div></div>
+</div>
+<div class="chart-wrap mb-lg"><div class="chart-title">Association Rules Table</div>
+  <div style="overflow-x:auto"><table class="data-table" id="basket-table"></table></div>
+</div>
+
+<div class="section-label mb-md">Dynamic Pricing</div>
+<div class="grid-2 mb-lg">
+  <div class="chart-wrap"><div class="chart-title">Margin by Pricing Tier</div><div class="chart-sub">Styling service leads at 92% margin</div><div id="c-margin" style="height:280px"></div></div>
+  <div class="chart-wrap"><div class="chart-title">Max Outfit WTP Distribution</div><div class="chart-sub">₹700–1,500 is the sweet spot</div><div id="c-wtp" style="height:280px"></div></div>
+</div>
+<div class="chart-wrap mb-lg"><div class="chart-title">Pricing Tier Strategy</div>
+  <div style="overflow-x:auto"><table class="data-table" id="pricing-table"></table></div>
+</div>
+
+<div class="section-label mb-md">Product Intelligence</div>
+<div class="grid-2 mb-lg">
+  <div class="chart-wrap"><div class="chart-title">Clothing Category Demand</div><div class="chart-sub">Oversized Tees & Baggy Jeans lead — stock priority</div><div id="c-cloth" style="height:300px"></div></div>
+  <div class="chart-wrap"><div class="chart-title">Colour Palette Demand</div><div class="chart-sub">Neutrals + Earthy tones dominate</div><div id="c-colour" style="height:300px"></div></div>
+</div>
+
+</div></div>
+<footer class="footer"><div class="container"><div class="footer-inner">
+  <span class="footer-brand">Archive 27</span><span>Recommendation Studio</span>
+  <span>Peehu Manglik · Arnav Jain · Havisha Agarwal · Syed Ali</span>
+</div></div></footer>
+
+<script src="https://cdn.plot.ly/plotly-2.32.0.min.js"></script>
+<script src="../js/utils.js"></script>
+<script src="../js/data.js"></script>
+<script>
+const D=window.A27_DATA,A=window.A27;
+A.buildNav('rs');
+
+const RECS={
+  'Aesthetic Chaser':{products:['Y2K drop ₹800–1,500','Streetwear coord set ₹1,200','Upcycled bomber ₹1,800'],channels:['Instagram Reels campaign','Stories countdown to drop','UGC repost campaign'],offers:['Early drop access (24h)','Free lookbook PDF','Bundle: Top+Bottom 10% off'],msg:'Lead with aesthetic story, not price. Show the full styled outfit in action.',priority:'HIGH',c:'#6B4F9E'},
+  'Conscious Spender':{products:['Sustainable set ₹2,000–3,000','Upcycled premium ₹2,500','Circular trade-in programme'],channels:['Website sustainability story','Email/WhatsApp broadcast','Pop-up circular fashion event'],offers:['Trade-in credit for old clothes','Carbon-neutral packaging','Sustainability report card'],msg:'Lead with ethics and impact. Show sourcing story, circular credentials.',priority:'HIGH',c:'#4A6741'},
+  'Bargain Hunter':{products:['Single piece ₹300–700','Mystery box small ₹500–800','Clearance rack drops'],channels:['WhatsApp flash sale','Instagram "deal of the day"','Price-led Reels'],offers:['₹100 off first purchase','Bundle 2 = 15% off','Flash sale early notification'],msg:'Lead with price, scarcity, value. Show retail vs our price comparison.',priority:'MEDIUM',c:'#8B6914'},
+  'Fence-Sitter':{products:['Easy-return outfit ₹800–1,200','Starter mystery box ₹500–800','Free styling consult'],channels:['Try-on Reels content','WhatsApp COD highlight','Peer review showcase'],offers:['COD + easy returns banner','Free first return guarantee','Social proof: 500+ buyers'],msg:'Reduce risk perception. Lead with COD, easy returns, real customer photos.',priority:'MEDIUM',c:'#2A3D5C'},
+  'Occasional Gifter':{products:['Gifting mystery box ₹1,200–1,800','Curated gift set','Digital lookbook gift'],channels:['Pop-up festive events','WhatsApp gifting broadcast','Instagram gift ideas'],offers:['Free gift wrapping >₹1,000','Gift card option','Occasion bundle Birthday/Diwali'],msg:'Lead with occasion-based curation. Make gifting effortless and prestigious.',priority:'MEDIUM',c:'#8B3A2A'},
+  'Skeptic':{products:['Single low-risk piece ₹500–800','Well-documented quality item','Social-proof listing'],channels:['Website detailed photos','Word-of-mouth referral','YouTube review content'],offers:['Money-back guarantee','Customer review highlights','1 item first, subscription later'],msg:'Build trust incrementally. Show quality evidence upfront. Do not push hard.',priority:'LOW',c:'#6B6B64'},
+};
+
+function loadRec(p,btn){
+  document.querySelectorAll('#rec-btns button').forEach(b=>{b.className='btn btn-outline btn-sm';});
+  if(btn)btn.className='btn btn-dark btn-sm';
+  const r=RECS[p];
+  const pcls=r.priority==='HIGH'?'tag-sage':r.priority==='MEDIUM'?'tag-gold':'tag-rust';
+  document.getElementById('rec-out').innerHTML=`
+    <div style="border:1px solid var(--border);border-radius:var(--r-lg);padding:1.5rem;background:var(--cream)">
+      <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1.25rem;flex-wrap:wrap">
+        <div style="font-family:var(--font-serif);font-size:1.3rem;color:${r.c}">${p}</div>
+        <span class="tag ${pcls}">${r.priority} PRIORITY</span>
+        <span class="label">CLV: <strong class="text-gold">${D.ml.clv[p]?.clv?'₹'+D.ml.clv[p].clv.toLocaleString():'—'}</strong></span>
+      </div>
+      <div class="grid-3">
+        <div><div class="label mb-sm" style="color:${r.c}">Products</div>${r.products.map(x=>`<div style="padding:.35rem 0;border-bottom:1px solid var(--border);font-size:.8rem;color:var(--ink-2)">→ ${x}</div>`).join('')}</div>
+        <div><div class="label mb-sm" style="color:${r.c}">Channels</div>${r.channels.map(x=>`<div style="padding:.35rem 0;border-bottom:1px solid var(--border);font-size:.8rem;color:var(--ink-2)">→ ${x}</div>`).join('')}</div>
+        <div><div class="label mb-sm" style="color:${r.c}">Offers</div>${r.offers.map(x=>`<div style="padding:.35rem 0;border-bottom:1px solid var(--border);font-size:.8rem;color:var(--ink-2)">→ ${x}</div>`).join('')}</div>
+      </div>
+      <div class="insight navy mt-md" style="margin-bottom:0"><strong>Messaging: </strong>${r.msg}</div>
+    </div>`;
+}
+loadRec('Aesthetic Chaser');
+
+const mb=D.market_basket;
+A.plot('c-lift',[{type:'bar',orientation:'h',y:mb.map(r=>`${r.a} → ${r.b}`),x:mb.map(r=>r.lift),
+  marker:{color:'#8B6914',opacity:.85,line:{color:'transparent'}},
+  text:mb.map(r=>r.lift.toFixed(2)+'×'),textposition:'outside',
+  hovertemplate:'%{y}<br>Lift: %{x:.2f}×<extra></extra>'}],
+{xaxis:{range:[1,2.2],title:{text:'Lift (×)'}},margin:{t:10,b:50,l:240,r:80}});
+
+A.plot('c-bubble',[{type:'scatter',mode:'markers+text',x:mb.map(r=>r.sup),y:mb.map(r=>r.conf),
+  marker:{size:mb.map(r=>r.lift*18),color:'#2A3D5C',opacity:.7,line:{color:'#2A3D5C',width:1}},
+  text:mb.map(r=>r.a),textposition:'top center',textfont:{size:8,color:'#9A9A90'},
+  hovertemplate:'<b>%{text}</b><br>Support: %{x:.3f}<br>Confidence: %{y:.3f}<extra></extra>'}],
+{xaxis:{title:{text:'Support'},tickformat:'.2f'},yaxis:{title:{text:'Confidence'},tickformat:'.2f'},margin:{t:10,b:60,l:60,r:20}});
+
+document.getElementById('basket-table').innerHTML=`
+<thead><tr><th>Antecedent</th><th>Consequent</th><th>Support</th><th>Confidence</th><th>Lift</th><th>Action</th></tr></thead>
+<tbody>${mb.map(r=>`<tr><td>${r.a}</td><td>${r.b}</td><td class="mono">${r.sup.toFixed(3)}</td><td class="mono">${r.conf.toFixed(3)}</td><td class="val-gold mono">${r.lift.toFixed(2)}×</td><td><span class="tag tag-sage">Bundle ↑</span></td></tr>`).join('')}
+</tbody>`;
+
+const pr=D.pricing;
+A.plot('c-margin',[{type:'bar',x:pr.map(t=>t.tier),y:pr.map(t=>t.margin),
+  marker:{color:pr.map(t=>t.margin>=80?'#4A6741':t.margin>=65?'#2A3D5C':'#8B6914'),line:{color:'transparent'}},
+  text:pr.map(t=>t.margin+'%'),textposition:'outside',hovertemplate:'%{x}: %{y}%<extra></extra>'}],
+{yaxis:{ticksuffix:'%',range:[0,105],title:{text:'Margin %'}},margin:{t:10,b:60,l:60,r:20}});
+
+const wo=['Under 300','300-700','700-1500','1500-3000','Above 3000'];
+A.plot('c-wtp',[{type:'bar',x:wo,y:wo.map(k=>Math.round((D.budget.max_outfit[k]||0)*100)),
+  marker:{color:wo.map((_,i)=>i===2?'#8B6914':'#D5D0C5'),line:{color:'transparent'}},
+  text:wo.map(k=>Math.round((D.budget.max_outfit[k]||0)*100)+'%'),textposition:'outside',
+  hovertemplate:'%{x}: %{y}%<extra></extra>'}],
+{xaxis:{tickangle:-20},yaxis:{ticksuffix:'%'},margin:{t:10,b:80,l:50,r:20}});
+
+document.getElementById('pricing-table').innerHTML=`
+<thead><tr><th>Tier</th><th>Product</th><th>Price Range</th><th>Target</th><th>Margin</th><th>Volume</th></tr></thead>
+<tbody>${pr.map(t=>`<tr><td style="font-weight:600;color:var(--gold)">${t.tier}</td><td>${t.product}</td><td class="mono">${t.range}</td><td>${t.target}</td><td class="val-gold">${t.margin}%</td><td><span class="tag ${t.volume==='High'?'tag-sage':t.volume==='Medium'?'tag-gold':'tag-rust'}">${t.volume}</span></td></tr>`).join('')}
+</tbody>`;
+
+const ci=Object.entries(D.product.clothing).sort((a,b)=>b[1]-a[1]);
+A.plot('c-cloth',[{type:'bar',orientation:'h',y:ci.map(([k])=>k.replace(/\b\w/g,c=>c.toUpperCase())),x:ci.map(([,v])=>Math.round(v*100)),
+  marker:{color:'#6B4F9E',opacity:.8,line:{color:'transparent'}},
+  text:ci.map(([,v])=>Math.round(v*100)+'%'),textposition:'outside',
+  hovertemplate:'%{y}: %{x}%<extra></extra>'}],
+{xaxis:{ticksuffix:'%',range:[0,70]},margin:{t:10,b:50,l:150,r:70}});
+
+const col=Object.entries(D.product.colour).sort((a,b)=>b[1]-a[1]);
+A.plot('c-colour',[{type:'bar',x:col.map(([k])=>k.replace(/\b\w/g,c=>c.toUpperCase())),y:col.map(([,v])=>Math.round(v*100)),
+  marker:{color:['#D4C8A8','#C4A882','#F0D5CC','#C44','#D4B483','#F0A000','#E8E8E0'].slice(0,col.length),line:{color:'transparent'}},
+  text:col.map(([,v])=>Math.round(v*100)+'%'),textposition:'outside',
+  hovertemplate:'%{x}: %{y}%<extra></extra>'}],
+{xaxis:{tickangle:-20},yaxis:{ticksuffix:'%'},margin:{t:10,b:80,l:50,r:20}});
+</script>
+</body>
+</html>

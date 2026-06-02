@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Customer Intelligence · Archive 27</title>
+<link rel="stylesheet" href="../css/main.css"/>
+</head>
+<body>
+<nav class="nav" id="main-nav"></nav>
+<div class="page"><div class="container">
+
+<div class="page-header">
+  <div class="page-header-eyebrow label">Customer Intelligence</div>
+  <h1>Know your customer.<br/><em>Deeply.</em></h1>
+  <p>Demographic profiling, behavioural segmentation, persona radar, and Sankey flow mapping across 10,000 responses.</p>
+  <div class="page-header-tags">
+    <span class="tag tag-gold">Descriptive</span><span class="tag tag-navy">Diagnostic</span>
+    <span class="tag tag-sage">10,000 Respondents</span><span class="tag tag-rust">6 Personas</span>
+  </div>
+</div>
+
+<div class="grid-4 mb-lg" id="ci-kpis"></div>
+
+<div class="tabs-wrap">
+  <div class="tab-nav">
+    <button class="tab-btn active" data-tab="demo">Demographics</button>
+    <button class="tab-btn" data-tab="beh">Fashion Behaviour</button>
+    <button class="tab-btn" data-tab="pers">Persona Profiles</button>
+    <button class="tab-btn" data-tab="seg">Segment Deep-Dive</button>
+    <button class="tab-btn" data-tab="flow">Customer Flow</button>
+  </div>
+
+  <div class="tab-panel active" data-tab="demo">
+    <div class="grid-2 mb-lg">
+      <div class="chart-wrap"><div class="chart-title">Age Group Distribution</div><div class="chart-sub">Gen Z (18–22) is the dominant cohort</div><div id="c-age" style="height:300px"></div></div>
+      <div class="chart-wrap"><div class="chart-title">Gender Split</div><div class="chart-sub">Female-led demand at 57.6%</div><div id="c-gender" style="height:300px"></div></div>
+    </div>
+    <div class="grid-2 mb-lg">
+      <div class="chart-wrap"><div class="chart-title">City Tier Distribution</div><div class="chart-sub">Metro + Tier 2 = 82% — validates Instagram-first strategy</div><div id="c-city" style="height:300px"></div></div>
+      <div class="chart-wrap"><div class="chart-title">Income Distribution</div><div class="chart-sub">₹10K–50K bracket dominant</div><div id="c-income" style="height:300px"></div></div>
+    </div>
+    <div class="chart-wrap mb-lg"><div class="chart-title">Purchase Intent by Age Group</div><div class="chart-sub">18–27 drives 62% of likely buyers</div><div id="c-age-intent" style="height:300px"></div></div>
+    <div class="grid-2">
+      <div class="insight gold"><strong>📌 18–27 age group drives 62% of likely buyers.</strong> Gen Z and early millennials are the primary revenue engine.</div>
+      <div class="insight navy"><strong>⚡ Metro cities contribute 47% of respondents</strong> and show the highest purchase intent. Tier 2 is the growth frontier.</div>
+    </div>
+  </div>
+
+  <div class="tab-panel" data-tab="beh">
+    <div class="grid-2 mb-lg">
+      <div class="chart-wrap"><div class="chart-title">Fashion Identity</div><div class="chart-sub">What drives their relationship with fashion?</div><div id="c-fid" style="height:320px"></div></div>
+      <div class="chart-wrap"><div class="chart-title">Primary Style Preference</div><div class="chart-sub">Y2K / Retro and Streetwear lead — highest conversion</div><div id="c-style" style="height:320px"></div></div>
+    </div>
+    <div class="grid-2 mb-lg">
+      <div class="chart-wrap"><div class="chart-title">Discovery Channel</div><div class="chart-sub">Instagram/Reels at 41% — content-first validated</div><div id="c-chan" style="height:300px"></div></div>
+      <div class="chart-wrap"><div class="chart-title">Shopping Frequency</div><div class="chart-sub">Monthly shoppers form the core buyer base</div><div id="c-freq" style="height:300px"></div></div>
+    </div>
+    <div class="chart-wrap"><div class="chart-title">Purchase Intent by Style</div><div class="chart-sub">Y2K and Streetwear show highest Interested rates</div><div id="c-style-int" style="height:320px"></div></div>
+  </div>
+
+  <div class="tab-panel" data-tab="pers">
+    <div class="chart-wrap mb-lg"><div class="chart-title">6-Dimension Persona Radar</div><div class="chart-sub">Intent · Spend · Sustainability · UGC · Subscription · Brand Loyalty</div><div id="c-radar" style="height:420px"></div></div>
+    <div class="grid-3 mb-lg" id="persona-cards"></div>
+    <div class="chart-wrap"><div class="chart-title">Median Monthly Spend by Persona</div><div id="c-spend-pers" style="height:280px"></div></div>
+  </div>
+
+  <div class="tab-panel" data-tab="seg">
+    <div class="flex gap-sm mb-lg" style="flex-wrap:wrap" id="seg-btns">
+      <button class="btn btn-dark btn-sm" onclick="loadSeg('Aesthetic Chaser',this)">Aesthetic Chaser</button>
+      <button class="btn btn-outline btn-sm" onclick="loadSeg('Conscious Spender',this)">Conscious Spender</button>
+      <button class="btn btn-outline btn-sm" onclick="loadSeg('Bargain Hunter',this)">Bargain Hunter</button>
+      <button class="btn btn-outline btn-sm" onclick="loadSeg('Fence-Sitter',this)">Fence-Sitter</button>
+      <button class="btn btn-outline btn-sm" onclick="loadSeg('Occasional Gifter',this)">Occasional Gifter</button>
+      <button class="btn btn-outline btn-sm" onclick="loadSeg('Skeptic',this)">Skeptic</button>
+    </div>
+    <div id="seg-detail"></div>
+  </div>
+
+  <div class="tab-panel" data-tab="flow">
+    <div class="chart-wrap mb-lg"><div class="chart-title">Customer Flow: Persona → Purchase Intent</div><div class="chart-sub">Sankey diagram showing how each persona maps to purchase outcomes</div><div id="c-sankey" style="height:480px"></div></div>
+    <div class="grid-2">
+      <div class="chart-wrap"><div class="chart-title">Prior Thrift Experience</div><div id="c-thrift" style="height:280px"></div></div>
+      <div class="chart-wrap"><div class="chart-title">Top Concerns (Barriers)</div><div id="c-concern" style="height:280px"></div></div>
+    </div>
+  </div>
+</div>
+
+</div></div>
+<footer class="footer"><div class="container"><div class="footer-inner">
+  <span class="footer-brand">Archive 27</span>
+  <span>Customer Intelligence</span>
+  <span>Peehu Manglik · Arnav Jain · Havisha Agarwal · Syed Ali</span>
+</div></div></footer>
+
+<script src="https://cdn.plot.ly/plotly-2.32.0.min.js"></script>
+<script src="../js/utils.js"></script>
+<script src="../js/data.js"></script>
+<script>
+const D=window.A27_DATA,A=window.A27;
+A.buildNav('ci');
+
+document.getElementById('ci-kpis').innerHTML=[
+  {l:'Total Respondents',v:'10,000',d:'5× original dataset',c:'pos'},
+  {l:'Likely Buyers',v:D.overview.likely_buyers.toLocaleString('en-IN'),d:'55.2% purchase intent',c:'pos'},
+  {l:'Female Respondents',v:'57.6%',d:'Female-led demand',c:'pos'},
+  {l:'Metro + Tier 2',v:'82.4%',d:'Digital-first market',c:'neu'},
+].map(k=>`<div class="kpi"><div class="kpi-label">${k.l}</div><div class="kpi-value ${k.c==='pos'?'accent':''}">${k.v}</div><div class="kpi-delta ${k.c}">${k.d}</div></div>`).join('');
+
+const AO=['Under 18','18-22','23-27','28-34','35-44','45+'];
+const ICLR=['#4A6741','#8B6914','#8B3A2A'];
+const ICLS=['Interested','Maybe','Not Interested'];
+
+A.reg('demo',()=>{
+  A.plot('c-age',[{type:'bar',x:AO,y:AO.map(a=>Math.round((D.demographics.age[a]||0)*100)),
+    marker:{color:AO.map((_,i)=>i===1||i===2?'#8B6914':'#D5D0C5'),line:{color:'transparent'}},
+    text:AO.map(a=>Math.round((D.demographics.age[a]||0)*100)+'%'),textposition:'outside',
+    hovertemplate:'%{x}: %{y}%<extra></extra>'}],
+  {xaxis:{title:{text:'Age Group'}},yaxis:{ticksuffix:'%'},margin:{t:10,b:60,l:50,r:20}});
+
+  const gk=Object.keys(D.demographics.gender);
+  A.plot('c-gender',[{type:'pie',labels:gk,values:gk.map(g=>Math.round(D.demographics.gender[g]*10000)),
+    marker:{colors:['#8B6914','#2A3D5C','#4A6741','#6B6B64'],line:{color:'#F2EFE9',width:2}},
+    textinfo:'label+percent',hovertemplate:'%{label}: %{percent}<extra></extra>'}],
+  {margin:{t:10,b:10,l:10,r:10},showlegend:false});
+
+  const CO=['Metro','Tier 2','Tier 3 / Small town','Rural'];
+  A.plot('c-city',[{type:'bar',orientation:'h',y:CO,x:CO.map(c=>Math.round((D.demographics.city[c]||0)*100)),
+    marker:{color:['#8B6914','#2A3D5C','#4A6741','#8B3A2A'],line:{color:'transparent'}},
+    text:CO.map(c=>Math.round((D.demographics.city[c]||0)*100)+'%'),textposition:'outside',
+    hovertemplate:'%{y}: %{x}%<extra></extra>'}],
+  {xaxis:{ticksuffix:'%',range:[0,55]},margin:{t:10,b:50,l:160,r:60}});
+
+  const IO=['Below 10k','10k-25k','25k-50k','50k-1L','Above 1L'];
+  A.plot('c-income',[{type:'bar',x:IO,y:IO.map(i=>Math.round((D.demographics.income[i]||0)*100)),
+    marker:{color:'#6B4F9E',opacity:.8,line:{color:'transparent'}},
+    hovertemplate:'%{x}: %{y}%<extra></extra>'}],
+  {xaxis:{title:{text:'Income Band'},tickangle:-20},yaxis:{ticksuffix:'%'},margin:{t:10,b:80,l:50,r:20}});
+
+  A.plot('c-age-intent',ICLS.map((it,ii)=>({type:'bar',name:it,x:AO,
+    y:AO.map(a=>Math.round((D.demographics.age_intent[a]?.[it]||0)*100)),
+    marker:{color:ICLR[ii]},hovertemplate:it+' · %{x}: %{y}%<extra></extra>'})),
+  {barmode:'stack',xaxis:{title:{text:'Age Group'}},yaxis:{ticksuffix:'%'},
+    legend:{orientation:'h',y:-0.25},margin:{t:10,b:80,l:50,r:20}});
+});
+
+A.reg('beh',()=>{
+  const fk=Object.keys(D.fashion.identity).sort((a,b)=>D.fashion.identity[b]-D.fashion.identity[a]);
+  A.plot('c-fid',[{type:'bar',orientation:'h',y:fk,x:fk.map(k=>Math.round(D.fashion.identity[k]*100)),
+    marker:{color:'#6B4F9E',opacity:.8,line:{color:'transparent'}},
+    text:fk.map(k=>Math.round(D.fashion.identity[k]*100)+'%'),textposition:'outside',
+    hovertemplate:'%{y}: %{x}%<extra></extra>'}],
+  {xaxis:{ticksuffix:'%',range:[0,35]},margin:{t:10,b:50,l:200,r:60}});
+
+  const sk=Object.keys(D.fashion.style).sort((a,b)=>D.fashion.style[b]-D.fashion.style[a]);
+  A.plot('c-style',[{type:'bar',x:sk,y:sk.map(k=>Math.round(D.fashion.style[k]*100)),
+    marker:{color:['#8B6914','#2A3D5C','#6B4F9E','#4A6741','#8B3A2A','#6B6B64','#8B6914'],line:{color:'transparent'}},
+    text:sk.map(k=>Math.round(D.fashion.style[k]*100)+'%'),textposition:'outside',
+    hovertemplate:'%{x}: %{y}%<extra></extra>'}],
+  {xaxis:{tickangle:-20},yaxis:{ticksuffix:'%'},margin:{t:10,b:80,l:50,r:20}});
+
+  const ck=Object.keys(D.fashion.channel).sort((a,b)=>D.fashion.channel[b]-D.fashion.channel[a]);
+  A.plot('c-chan',[{type:'pie',labels:ck,values:ck.map(k=>D.fashion.channel[k]),
+    marker:{colors:['#8B6914','#2A3D5C','#4A6741','#6B4F9E','#8B3A2A','#6B6B64'],line:{color:'#F2EFE9',width:2}},
+    textinfo:'label+percent',hovertemplate:'%{label}: %{percent}<extra></extra>'}],
+  {margin:{t:10,b:10,l:10,r:10},showlegend:false});
+
+  const fo=['Multiple times a month','Once a month','Once every 2-3 months','Few times a year','Rarely'];
+  A.plot('c-freq',[{type:'bar',x:fo,y:fo.map(f=>Math.round((D.fashion.frequency[f]||0)*100)),
+    marker:{color:'#2A3D5C',opacity:.8,line:{color:'transparent'}},
+    text:fo.map(f=>Math.round((D.fashion.frequency[f]||0)*100)+'%'),textposition:'outside',
+    hovertemplate:'%{x}: %{y}%<extra></extra>'}],
+  {xaxis:{tickangle:-20},yaxis:{ticksuffix:'%'},margin:{t:10,b:100,l:50,r:20}});
+
+  const styles=Object.keys(D.fashion.style_intent);
+  A.plot('c-style-int',ICLS.map((it,ii)=>({type:'bar',name:it,x:styles,
+    y:styles.map(s=>Math.round((D.fashion.style_intent[s]?.[it]||0)*100)),
+    marker:{color:ICLR[ii]},hovertemplate:it+' · %{x}: %{y}%<extra></extra>'})),
+  {barmode:'stack',xaxis:{tickangle:-15},yaxis:{ticksuffix:'%'},
+    legend:{orientation:'h',y:-0.3},margin:{t:10,b:100,l:50,r:20}});
+});
+
+A.reg('pers',()=>{
+  const dims=['intent','spend','sust','ugc','sub','loyalty'];
+  const dimLabels=['Intent','Spend','Sustainability','UGC','Subscription','Loyalty'];
+  A.plot('c-radar',A.PO.map(p=>({
+    type:'scatterpolar',fill:'toself',name:p,
+    r:[...dims.map(d=>D.segments[p]?.radar[d]||0),D.segments[p]?.radar[dims[0]]||0],
+    theta:[...dimLabels,dimLabels[0]],
+    line:{color:A.PC[p]},fillcolor:A.PC[p]+'22',
+    hovertemplate:'<b>'+p+'</b><br>%{theta}: %{r:.2f}<extra></extra>'})),
+  {polar:{bgcolor:'rgba(0,0,0,0)',radialaxis:{visible:true,range:[0,1],gridcolor:'#D5D0C5',tickfont:{size:8,color:'#9A9A90'}},angularaxis:{gridcolor:'#D5D0C5'}},
+    showlegend:true,legend:{orientation:'h',y:-0.12,font:{size:10}},margin:{t:20,b:80,l:30,r:30}});
+
+  const meta={'Aesthetic Chaser':{icon:'🎨',age:'18–24',city:'Metro',style:'Y2K/Streetwear'},
+    'Conscious Spender':{icon:'♻️',age:'23–30',city:'Metro',style:'Minimal/Clean'},
+    'Bargain Hunter':{icon:'💰',age:'18–28',city:'Tier 2/3',style:'Mixed'},
+    'Fence-Sitter':{icon:'⚖️',age:'22–35',city:'Mixed',style:'Minimal'},
+    'Occasional Gifter':{icon:'🎁',age:'25–40',city:'Metro',style:'Formal/Classic'},
+    'Skeptic':{icon:'🤔',age:'28–45',city:'Mixed',style:'Formal'}};
+  document.getElementById('persona-cards').innerHTML=A.PO.map(p=>{
+    const s=D.segments[p],m=meta[p],c=A.PC[p],ip=Math.round((s.intent['Interested']||0)*100);
+    return`<div class="card" style="border-top:3px solid ${c}">
+      <div style="font-size:1.8rem;margin-bottom:.5rem">${m.icon}</div>
+      <div style="font-weight:600;font-size:.9rem;color:${c};margin-bottom:.2rem">${p}</div>
+      <div class="label mb-sm">${s.pct}% · n=${s.n.toLocaleString()}</div>
+      <div class="progress mb-md"><div class="progress-fill" style="width:${ip}%;background:${c}"></div></div>
+      <div class="label mb-sm">${ip}% Purchase Intent</div>
+      <div style="font-size:.76rem;color:var(--ink-3);line-height:1.9">
+        Age: ${m.age}<br/>City: ${m.city}<br/>Style: ${m.style}<br/>
+        Spend: ₹${s.spend_median.toLocaleString()}/mo<br/>Channel: ${s.top_channel}
+      </div>
+    </div>`;}).join('');
+
+  A.plot('c-spend-pers',[{type:'bar',x:A.PO,y:A.PO.map(p=>D.segments[p]?.spend_median||0),
+    marker:{color:A.PO.map(p=>A.PC[p]),line:{color:'transparent'}},
+    text:A.PO.map(p=>'₹'+(D.segments[p]?.spend_median||0).toLocaleString()),textposition:'outside',
+    hovertemplate:'%{x}<br>₹%{y:,}/mo<extra></extra>'}],
+  {xaxis:{tickangle:-20},yaxis:{title:{text:'₹/month'},tickprefix:'₹'},margin:{t:10,b:80,l:70,r:20}});
+});
+
+A.reg('seg',()=>loadSeg('Aesthetic Chaser'));
+function loadSeg(p,btn){
+  document.querySelectorAll('#seg-btns button').forEach(b=>{b.className='btn btn-outline btn-sm';});
+  if(btn){btn.className='btn btn-dark btn-sm';}
+  else{document.querySelector('#seg-btns button').className='btn btn-dark btn-sm';}
+  const s=D.segments[p],c=A.PC[p];
+  const ip=Math.round((s.intent['Interested']||0)*100),mp=Math.round((s.intent['Maybe']||0)*100),np=Math.round((s.intent['Not Interested']||0)*100);
+  document.getElementById('seg-detail').innerHTML=`
+    <div class="grid-4 mb-lg">
+      <div class="kpi" style="border-bottom:2px solid ${c}"><div class="kpi-label">Segment Size</div><div class="kpi-value" style="color:${c}">${s.pct}%</div><div class="kpi-delta neu">n=${s.n.toLocaleString()}</div></div>
+      <div class="kpi"><div class="kpi-label">Purchase Intent</div><div class="kpi-value accent">${ip}%</div><div class="kpi-delta pos">Interested</div></div>
+      <div class="kpi"><div class="kpi-label">Median Spend</div><div class="kpi-value">₹${s.spend_median.toLocaleString()}</div><div class="kpi-delta neu">per month</div></div>
+      <div class="kpi"><div class="kpi-label">Avg Sustainability</div><div class="kpi-value">${s.avg_sust}</div><div class="kpi-delta neu">score/4</div></div>
+    </div>
+    <div class="grid-2 mb-lg">
+      <div class="chart-wrap"><div class="chart-title">${p} · Intent Split</div><div id="s-intent" style="height:220px"></div></div>
+      <div class="chart-wrap"><div class="chart-title">${p} · Income</div><div id="s-income" style="height:220px"></div></div>
+    </div>
+    <div class="grid-3">
+      <div class="card"><div class="label mb-sm">Top Channel</div><div style="font-weight:600;color:${c}">${s.top_channel}</div></div>
+      <div class="card"><div class="label mb-sm">Top Concern</div><div style="font-weight:600;color:var(--rust)">${s.top_concern}</div></div>
+      <div class="card"><div class="label mb-sm">Top Style</div><div style="font-weight:600">${s.top_style}</div></div>
+    </div>`;
+  setTimeout(()=>{
+    A.plot('s-intent',[{type:'pie',labels:ICLS,values:[ip,mp,np],hole:.45,
+      marker:{colors:['#4A6741','#8B6914','#8B3A2A'],line:{color:'#F2EFE9',width:2}},
+      textinfo:'label+percent',hovertemplate:'%{label}: %{percent}<extra></extra>'}],
+    {margin:{t:10,b:10,l:10,r:10},showlegend:false,
+      annotations:[{text:ip+'%',x:.5,y:.5,showarrow:false,font:{size:14,color:c,family:'Cormorant Garamond'}}]});
+    const ik=Object.keys(s.income);
+    A.plot('s-income',[{type:'bar',x:ik,y:ik.map(k=>Math.round(s.income[k]*100)),
+      marker:{color:c,opacity:.8,line:{color:'transparent'}},
+      hovertemplate:'%{x}: %{y}%<extra></extra>'}],
+    {xaxis:{tickangle:-20},yaxis:{ticksuffix:'%'},margin:{t:10,b:80,l:50,r:20}});
+  },100);
+}
+
+A.reg('flow',()=>{
+  const src=[],tgt=[],val=[],col=[];
+  A.PO.forEach((p,pi)=>{
+    ICLS.forEach((it,ii)=>{
+      const v=Math.round((D.segments[p].intent[it]||0)*D.segments[p].n);
+      if(v>0){src.push(pi);tgt.push(6+ii);val.push(v);col.push(A.PC[p]+'88');}
+    });
+  });
+  A.plot('c-sankey',[{type:'sankey',orientation:'h',
+    node:{pad:20,thickness:16,label:[...A.PO,'→ Interested','→ Maybe','→ Not Interested'],
+      color:[...A.PO.map(p=>A.PC[p]),'#4A6741','#8B6914','#8B3A2A'],line:{color:'rgba(0,0,0,0)',width:0}},
+    link:{source:src,target:tgt,value:val,color:col,
+      hovertemplate:'%{source.label} → %{target.label}<br>%{value:,}<extra></extra>'}}],
+  {margin:{t:10,b:10,l:10,r:10}});
+
+  const tk=Object.keys(D.attitudes.prior_thrift).sort((a,b)=>D.attitudes.prior_thrift[b]-D.attitudes.prior_thrift[a]);
+  A.plot('c-thrift',[{type:'pie',labels:tk,values:tk.map(k=>D.attitudes.prior_thrift[k]),
+    marker:{colors:['#4A6741','#2A3D5C','#8B6914','#8B3A2A'],line:{color:'#F2EFE9',width:2}},
+    textinfo:'label+percent',hovertemplate:'%{label}: %{percent}<extra></extra>'}],
+  {margin:{t:10,b:10,l:10,r:10},showlegend:false});
+
+  const ck=Object.keys(D.attitudes.concern).sort((a,b)=>D.attitudes.concern[b]-D.attitudes.concern[a]);
+  A.plot('c-concern',[{type:'bar',orientation:'h',y:ck,x:ck.map(k=>Math.round(D.attitudes.concern[k]*100)),
+    marker:{color:'#8B3A2A',opacity:.8,line:{color:'transparent'}},
+    text:ck.map(k=>Math.round(D.attitudes.concern[k]*100)+'%'),textposition:'outside',
+    hovertemplate:'%{y}: %{x}%<extra></extra>'}],
+  {xaxis:{ticksuffix:'%',range:[0,35]},margin:{t:10,b:50,l:180,r:70}});
+});
+
+A.initTabs();
+</script>
+</body>
+</html>

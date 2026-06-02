@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Forecasting Hub · Archive 27</title>
+<link rel="stylesheet" href="../css/main.css"/>
+<style>
+.slider-row{margin-bottom:1rem}
+.slider-label{display:flex;justify-content:space-between;font-size:.76rem;margin-bottom:.3rem}
+.slider-label span:last-child{font-family:var(--font-mono);color:var(--gold);font-weight:500}
+</style>
+</head>
+<body>
+<nav class="nav" id="main-nav"></nav>
+<div class="page"><div class="container">
+
+<div class="page-header">
+  <div class="page-header-eyebrow label">Forecasting Hub</div>
+  <h1>Revenue forecast.<br/><em>Budget simulation.</em></h1>
+  <p>ARIMA-style revenue forecasting, demand modelling, inventory planning, and an interactive marketing budget simulator.</p>
+  <div class="page-header-tags">
+    <span class="tag tag-gold">Revenue Forecasting</span><span class="tag tag-sage">Budget Simulator</span><span class="tag tag-navy">Demand Planning</span>
+  </div>
+</div>
+
+<div class="grid-4 mb-lg" id="f-kpis"></div>
+
+<div class="chart-wrap mb-lg">
+  <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:.75rem;margin-bottom:.75rem">
+    <div><div class="chart-title">52-Week Revenue Forecast</div><div class="chart-sub">ARIMA trend + seasonal decomposition · 87%–115% confidence band</div></div>
+    <div style="display:flex;gap:.4rem">
+      <button class="btn btn-sm btn-outline" id="btn-w" onclick="setView('weekly')">Weekly</button>
+      <button class="btn btn-sm btn-dark" id="btn-m" onclick="setView('monthly')">Monthly</button>
+    </div>
+  </div>
+  <div id="c-forecast" style="height:380px"></div>
+</div>
+
+<div class="chart-wrap mb-lg">
+  <div class="chart-title">Monthly Revenue Breakdown</div><div class="chart-sub">Actual Q1–Q2 vs forecast Q3–Q4</div>
+  <div style="overflow-x:auto;margin-top:.75rem"><table class="data-table" id="rev-table"></table></div>
+</div>
+
+<div class="section-label mb-md">Marketing Budget Simulator</div>
+<div class="card mb-lg">
+  <div style="font-weight:600;font-size:.95rem;margin-bottom:.25rem">Budget Allocator</div>
+  <div class="label mb-lg">Drag sliders to allocate your monthly marketing budget — revenue projections update live</div>
+  <div class="grid-2" style="align-items:start">
+    <div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem">
+        <div class="label">Total Budget</div>
+        <div style="font-family:var(--font-serif);font-size:1.8rem;color:var(--gold)" id="total-budget">₹50,000</div>
+      </div>
+      <div class="slider-row"><div class="slider-label"><span>📱 Instagram / Reels</span><span id="l-ig">₹18,000</span></div><input type="range" min="0" max="50000" step="1000" value="18000" id="sl-ig" oninput="updBudget()"/></div>
+      <div class="slider-row"><div class="slider-label"><span>💬 WhatsApp / Community</span><span id="l-wa">₹10,000</span></div><input type="range" min="0" max="30000" step="1000" value="10000" id="sl-wa" oninput="updBudget()"/></div>
+      <div class="slider-row"><div class="slider-label"><span>🌐 Website / SEO</span><span id="l-ws">₹8,000</span></div><input type="range" min="0" max="20000" step="1000" value="8000" id="sl-ws" oninput="updBudget()"/></div>
+      <div class="slider-row"><div class="slider-label"><span>🎪 Pop-up Events</span><span id="l-pu">₹9,000</span></div><input type="range" min="0" max="25000" step="1000" value="9000" id="sl-pu" oninput="updBudget()"/></div>
+      <div class="slider-row"><div class="slider-label"><span>▶️ YouTube / Content</span><span id="l-yt">₹5,000</span></div><input type="range" min="0" max="20000" step="1000" value="5000" id="sl-yt" oninput="updBudget()"/></div>
+    </div>
+    <div>
+      <div id="c-donut" style="height:260px"></div>
+      <div class="grid-2 mt-md">
+        <div class="kpi"><div class="kpi-label">Projected Revenue</div><div class="kpi-value accent" id="proj-rev">₹0</div><div class="kpi-delta pos" id="proj-roas">ROAS: —</div></div>
+        <div class="kpi"><div class="kpi-label">Est. New Customers</div><div class="kpi-value" id="proj-cust">0</div><div class="kpi-delta neu" id="proj-cac">CAC: —</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="grid-2 mb-lg">
+  <div class="chart-wrap"><div class="chart-title">Monthly Spend Distribution</div><div class="chart-sub">Inventory depth guide</div><div id="c-spend-dist" style="height:280px"></div></div>
+  <div class="chart-wrap"><div class="chart-title">Mystery Box Demand</div><div class="chart-sub">90.7% willing to buy — by WTP band</div><div id="c-box" style="height:280px"></div></div>
+</div>
+
+<div class="grid-2">
+  <div class="insight gold"><strong>78% revenue growth by Week 52.</strong> Seasonal peaks Oct–Dec and Feb–Apr. Maintain 2× inventory for these windows.</div>
+  <div class="insight sage"><strong>Instagram ROAS = 4.2×.</strong> Every ₹1 on Instagram Reels yields ₹4.20 in revenue — highest of all channels.</div>
+</div>
+
+</div></div>
+<footer class="footer"><div class="container"><div class="footer-inner">
+  <span class="footer-brand">Archive 27</span><span>Forecasting Hub</span>
+  <span>Peehu Manglik · Arnav Jain · Havisha Agarwal · Syed Ali</span>
+</div></div></footer>
+
+<script src="https://cdn.plot.ly/plotly-2.32.0.min.js"></script>
+<script src="../js/utils.js"></script>
+<script src="../js/data.js"></script>
+<script>
+const D=window.A27_DATA,A=window.A27,F=D.forecast;
+A.buildNav('fh');
+
+document.getElementById('f-kpis').innerHTML=[
+  {l:'YTD Revenue (H1)',v:'₹'+Math.round(F.monthly_actual.slice(0,6).reduce((a,b)=>a+b,0)).toLocaleString('en-IN'),d:'+22% vs target',c:'pos'},
+  {l:'Forecast Revenue (FY)',v:'₹'+F.monthly_forecast.reduce((a,b)=>a+b,0).toLocaleString('en-IN'),d:'Full-year',c:'pos'},
+  {l:'Revenue Growth',v:'+78%',d:'Week 1 → 52',c:'pos'},
+  {l:'Peak Week',v:'₹'+Math.max(...F.forecast).toLocaleString('en-IN'),d:'Festive peak',c:'pos'},
+].map(k=>`<div class="kpi"><div class="kpi-label">${k.l}</div><div class="kpi-value ${k.c==='pos'?'accent':''}">${k.v}</div><div class="kpi-delta ${k.c}">${k.d}</div></div>`).join('');
+
+let view='monthly';
+function setView(v){
+  view=v;
+  document.getElementById('btn-m').className='btn btn-sm '+(v==='monthly'?'btn-dark':'btn-outline');
+  document.getElementById('btn-w').className='btn btn-sm '+(v==='weekly'?'btn-dark':'btn-outline');
+  renderForecast();
+}
+function renderForecast(){
+  if(view==='weekly'){
+    A.plot('c-forecast',[
+      {type:'scatter',name:'Actual',x:F.weeks,y:F.actual,mode:'lines',line:{color:'#4A6741',width:2},hovertemplate:'Week %{x}<br>₹%{y:,}<extra></extra>'},
+      {type:'scatter',name:'Forecast',x:F.weeks,y:F.forecast,mode:'lines',line:{color:'#8B6914',width:2,dash:'dot'},hovertemplate:'Fcst %{x}<br>₹%{y:,}<extra></extra>'},
+      {type:'scatter',name:'Band',x:[...F.weeks,...[...F.weeks].reverse()],y:[...F.upper,...[...F.lower].reverse()],fill:'toself',fillcolor:'rgba(139,105,20,.08)',line:{width:0},hoverinfo:'skip'},
+    ],{xaxis:{title:{text:'Week'},dtick:4},yaxis:{title:{text:'Revenue (₹)'},tickprefix:'₹'},legend:{orientation:'h',y:-0.2},margin:{t:10,b:70,l:80,r:20}});
+  } else {
+    A.plot('c-forecast',[
+      {type:'bar',name:'Actual',x:F.monthly_labels,y:F.monthly_actual,marker:{color:'#4A6741',opacity:.85,line:{color:'transparent'}},hovertemplate:'%{x}<br>₹%{y:,}<extra></extra>'},
+      {type:'bar',name:'Forecast',x:F.monthly_labels,y:F.monthly_forecast,marker:{color:'#8B6914',opacity:.85,line:{color:'transparent'}},hovertemplate:'Fcst %{x}<br>₹%{y:,}<extra></extra>'},
+    ],{barmode:'group',xaxis:{title:{text:'Month'}},yaxis:{title:{text:'Revenue (₹)'},tickprefix:'₹'},legend:{orientation:'h',y:-0.2},margin:{t:10,b:70,l:80,r:20}});
+  }
+}
+renderForecast();
+
+document.getElementById('rev-table').innerHTML=`
+<thead><tr><th>Month</th><th>Actual</th><th>Forecast</th><th>Delta</th><th>Status</th></tr></thead>
+<tbody>${F.monthly_labels.map((m,i)=>{
+  const a=F.monthly_actual[i],f=F.monthly_forecast[i],g=((f-a)/a*100).toFixed(1);
+  return`<tr><td>${m}</td><td class="${i<6?'val-gold':''}">${i<6?'₹'+a.toLocaleString('en-IN'):'—'}</td>
+    <td class="mono">₹${f.toLocaleString('en-IN')}</td>
+    <td class="${+g>0?'val-sage':'val-rust'}">${+g>0?'+':''}${g}%</td>
+    <td><span class="tag ${i<6?'tag-sage':'tag-gold'}">${i<6?'Actual':'Projected'}</span></td></tr>`;
+}).join('')}</tbody>`;
+
+const ROAS={ig:4.2,wa:3.1,ws:2.4,pu:2.8,yt:1.9};
+const CAC={ig:180,wa:220,ws:350,pu:290,yt:420};
+const chNames={ig:'Instagram',wa:'WhatsApp',ws:'Website',pu:'Pop-up',yt:'YouTube'};
+function updBudget(){
+  const v={ig:+document.getElementById('sl-ig').value,wa:+document.getElementById('sl-wa').value,ws:+document.getElementById('sl-ws').value,pu:+document.getElementById('sl-pu').value,yt:+document.getElementById('sl-yt').value};
+  let tb=0,tr=0,tc=0;
+  Object.keys(v).forEach(k=>{document.getElementById('l-'+k).textContent='₹'+v[k].toLocaleString('en-IN');tb+=v[k];tr+=v[k]*ROAS[k];tc+=Math.round(v[k]/CAC[k]);});
+  document.getElementById('total-budget').textContent='₹'+tb.toLocaleString('en-IN');
+  document.getElementById('proj-rev').textContent='₹'+Math.round(tr).toLocaleString('en-IN');
+  document.getElementById('proj-roas').textContent='ROAS: '+(tr/Math.max(tb,1)).toFixed(2)+'×';
+  document.getElementById('proj-cust').textContent=tc.toLocaleString('en-IN');
+  document.getElementById('proj-cac').textContent='CAC: ₹'+Math.round(tb/Math.max(tc,1)).toLocaleString();
+  A.plot('c-donut',[{type:'pie',hole:.45,labels:Object.keys(v).map(k=>chNames[k]),values:Object.values(v),
+    marker:{colors:['#8B6914','#2A3D5C','#4A6741','#8B3A2A','#6B4F9E'],line:{color:'#F2EFE9',width:2}},
+    textinfo:'percent',sort:false,hovertemplate:'%{label}<br>₹%{value:,}<br>%{percent}<extra></extra>'}],
+  {margin:{t:10,b:10,l:10,r:10},showlegend:true,legend:{orientation:'h',font:{size:9}},
+    annotations:[{text:'Budget',x:.5,y:.5,showarrow:false,font:{size:10,color:'#9A9A90'}}]});
+}
+updBudget();
+
+const so=['Under 500','500-1000','1000-2500','2500-5000','Above 5000'];
+A.plot('c-spend-dist',[{type:'bar',x:so,y:so.map(k=>Math.round((D.budget.monthly_spend[k]||0)*100)),
+  marker:{color:so.map((_,i)=>i===2?'#8B6914':'#D5D0C5'),line:{color:'transparent'}},
+  text:so.map(k=>Math.round((D.budget.monthly_spend[k]||0)*100)+'%'),textposition:'outside',
+  hovertemplate:'%{x}: %{y}%<extra></extra>'}],
+{xaxis:{tickangle:-20},yaxis:{ticksuffix:'%'},margin:{t:10,b:80,l:50,r:20}});
+
+const bo=['Under 500','500-800','800-1200','1200-1800','Would not buy'];
+A.plot('c-box',[{type:'bar',x:bo,y:bo.map(k=>Math.round((D.budget.mystery_wtp[k]||0)*100)),
+  marker:{color:bo.map(k=>k==='Would not buy'?'#8B3A2A':'#4A6741'),line:{color:'transparent'}},
+  text:bo.map(k=>Math.round((D.budget.mystery_wtp[k]||0)*100)+'%'),textposition:'outside',
+  hovertemplate:'%{x}: %{y}%<extra></extra>'}],
+{xaxis:{tickangle:-20},yaxis:{ticksuffix:'%'},margin:{t:10,b:80,l:50,r:20}});
+</script>
+</body>
+</html>
